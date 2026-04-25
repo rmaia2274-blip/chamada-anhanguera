@@ -27,28 +27,11 @@
     max-width: 420px;
   }
 
-  .logo {
-    text-align: center;
-    margin-bottom: 20px;
-  }
+  .logo { text-align: center; margin-bottom: 20px; }
+  .logo h1 { font-size: 18px; font-weight: 700; color: #1a1a2e; }
+  .logo p  { font-size: 13px; color: #8892a4; margin-top: 4px; }
 
-  .logo h1 {
-    font-size: 18px;
-    font-weight: 700;
-    color: #1a1a2e;
-  }
-
-  .logo p {
-    font-size: 13px;
-    color: #8892a4;
-    margin-top: 4px;
-  }
-
-  .divider {
-    height: 1px;
-    background: #eef0f4;
-    margin: 16px 0;
-  }
+  .divider { height: 1px; background: #eef0f4; margin: 16px 0; }
 
   label {
     display: block;
@@ -74,11 +57,7 @@
     appearance: none;
   }
 
-  input:focus, select:focus {
-    border-color: #1a7a4a;
-    background: #fff;
-  }
-
+  input:focus, select:focus { border-color: #1a7a4a; background: #fff; }
   input::placeholder { color: #b0b8c8; }
 
   .geo-status {
@@ -95,8 +74,7 @@
   }
 
   .geo-status .dot {
-    width: 10px;
-    height: 10px;
+    width: 10px; height: 10px;
     border-radius: 50%;
     flex-shrink: 0;
     background: #cbd5e0;
@@ -125,7 +103,7 @@
     letter-spacing: 0.02em;
   }
 
-  button[type=submit]:active  { transform: scale(0.98); }
+  button[type=submit]:active   { transform: scale(0.98); }
   button[type=submit]:disabled { background: #a0aec0; cursor: default; }
 
   .resultado {
@@ -175,13 +153,13 @@
   <form id="form" autocomplete="off">
 
     <label for="ra">RA — Registro Acadêmico</label>
-    <input type="text" id="ra" name="ra" placeholder="Ex: 4196579" inputmode="numeric" required>
+    <input type="text" id="ra" placeholder="Ex: 4196579" inputmode="numeric" required>
 
     <label for="nome">Nome completo</label>
-    <input type="text" id="nome" name="nome" placeholder="Como consta na matrícula" required>
+    <input type="text" id="nome" placeholder="Como consta na matrícula" required>
 
     <label for="turma">Turma / Disciplina</label>
-    <select id="turma" name="turma" required>
+    <select id="turma" required>
       <option value="">— Selecione —</option>
       <optgroup label="Matemática Financeira">
         <option value="matfin_adm1">ADM — 1º Semestre</option>
@@ -220,10 +198,10 @@ const API_URL = 'https://script.google.com/macros/s/AKfycbwAofMUf1dZVA4Z7bleLvvG
 
 let coords = null;
 
-const geoStatus  = document.getElementById('geo-status');
-const geoTexto   = document.getElementById('geo-texto');
-const btnEnviar  = document.getElementById('btn-enviar');
-const resultado  = document.getElementById('resultado');
+const geoStatus = document.getElementById('geo-status');
+const geoTexto  = document.getElementById('geo-texto');
+const btnEnviar = document.getElementById('btn-enviar');
+const resultado = document.getElementById('resultado');
 
 function setGeo(estado, texto) {
   geoStatus.className = 'geo-status ' + estado;
@@ -244,15 +222,29 @@ function tentarGeo() {
     },
     err => {
       const msgs = {
-        1: 'Permissão de localização negada. Permita o acesso e recarregue.',
+        1: 'Permissão negada. Permita a localização e recarregue a página.',
         2: 'Não foi possível determinar sua localização. Tente novamente.',
-        3: 'Tempo esgotado ao obter localização. Tente novamente.',
+        3: 'Tempo esgotado. Tente novamente.',
       };
       setGeo('erro', msgs[err.code] || 'Erro ao obter localização.');
       btnEnviar.disabled = true;
     },
     { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
   );
+}
+
+// Envia via GET com parâmetros na URL — contorna CORS do Apps Script
+function enviarGet(params) {
+  return new Promise((resolve, reject) => {
+    const url = API_URL + '?' + new URLSearchParams(params).toString();
+
+    // Usa no-cors fetch — não lê a resposta, mas grava no script
+    // Para ler a resposta usamos script tag (JSONP-like via fetch redirect)
+    fetch(url, { method: 'GET', redirect: 'follow' })
+      .then(r => r.json())
+      .then(resolve)
+      .catch(reject);
+  });
 }
 
 document.getElementById('form').addEventListener('submit', async function(e) {
@@ -271,25 +263,19 @@ document.getElementById('form').addEventListener('submit', async function(e) {
   resultado.style.display = 'none';
 
   try {
-    const resp = await fetch(API_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        ra, nome, turma,
-        latitude:  coords.latitude,
-        longitude: coords.longitude
-      })
+    const json = await enviarGet({
+      ra, nome, turma,
+      latitude:  coords.latitude,
+      longitude: coords.longitude
     });
 
-    const json = await resp.json();
-
     resultado.style.display = 'block';
+
     if (json.ok) {
       resultado.className = 'resultado sucesso';
       resultado.textContent = '✅ ' + json.mensagem;
       document.getElementById('form').reset();
       coords = null;
-      setGeo('obtendo', 'Obtendo localização...');
       tentarGeo();
     } else {
       resultado.className = 'resultado erro';
@@ -307,7 +293,6 @@ document.getElementById('form').addEventListener('submit', async function(e) {
   btnEnviar.innerHTML = 'Registrar presença';
 });
 
-// Inicia geolocalização ao carregar
 tentarGeo();
 </script>
 </body>
