@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Chamada — Anhanguera Itaquera</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #f0f2f5;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 24px 16px 40px;
+  }
+
+  .card {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.10);
+    padding: 28px 24px;
+    width: 100%;
+    max-width: 420px;
+  }
+
+  .logo {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .logo h1 {
+    font-size: 18px;
+    font-weight: 700;
+    color: #1a1a2e;
+  }
+
+  .logo p {
+    font-size: 13px;
+    color: #8892a4;
+    margin-top: 4px;
+  }
+
+  .divider {
+    height: 1px;
+    background: #eef0f4;
+    margin: 16px 0;
+  }
+
+  label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    color: #4a5568;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  input, select {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 15px;
+    color: #1a1a2e;
+    background: #f8fafc;
+    outline: none;
+    transition: border-color 0.2s;
+    margin-bottom: 16px;
+    appearance: none;
+  }
+
+  input:focus, select:focus {
+    border-color: #1a7a4a;
+    background: #fff;
+  }
+
+  input::placeholder { color: #b0b8c8; }
+
+  .geo-status {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #f8fafc;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 12px 14px;
+    margin-bottom: 20px;
+    font-size: 13px;
+    color: #4a5568;
+  }
+
+  .geo-status .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    background: #cbd5e0;
+  }
+
+  .geo-status.obtendo .dot { background: #f59e0b; animation: pulse 1s infinite; }
+  .geo-status.ok .dot      { background: #22c55e; }
+  .geo-status.erro .dot    { background: #ef4444; }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0.3; }
+  }
+
+  button[type=submit] {
+    width: 100%;
+    padding: 14px;
+    background: #1a7a4a;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    letter-spacing: 0.02em;
+  }
+
+  button[type=submit]:active  { transform: scale(0.98); }
+  button[type=submit]:disabled { background: #a0aec0; cursor: default; }
+
+  .resultado {
+    display: none;
+    margin-top: 20px;
+    padding: 16px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    text-align: center;
+    line-height: 1.5;
+  }
+
+  .resultado.sucesso { background: #f0fdf4; color: #166534; border: 1.5px solid #bbf7d0; }
+  .resultado.erro    { background: #fef2f2; color: #991b1b; border: 1.5px solid #fecaca; }
+
+  .spinner {
+    display: inline-block;
+    width: 18px; height: 18px;
+    border: 3px solid #fff;
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    vertical-align: middle;
+    margin-right: 8px;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .rodape {
+    margin-top: 24px;
+    font-size: 11px;
+    color: #b0b8c8;
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+
+<div class="card">
+  <div class="logo">
+    <h1>📋 Chamada Digital</h1>
+    <p>Anhanguera — Campus Itaquera</p>
+  </div>
+  <div class="divider"></div>
+
+  <form id="form" autocomplete="off">
+
+    <label for="ra">RA — Registro Acadêmico</label>
+    <input type="text" id="ra" name="ra" placeholder="Ex: 4196579" inputmode="numeric" required>
+
+    <label for="nome">Nome completo</label>
+    <input type="text" id="nome" name="nome" placeholder="Como consta na matrícula" required>
+
+    <label for="turma">Turma / Disciplina</label>
+    <select id="turma" name="turma" required>
+      <option value="">— Selecione —</option>
+      <optgroup label="Matemática Financeira">
+        <option value="matfin_adm1">ADM — 1º Semestre</option>
+        <option value="matfin_adm3">ADM — 3º Semestre</option>
+        <option value="matfin_cc2">Ciências Contábeis — 2º Semestre</option>
+        <option value="matfin_cc3">Ciências Contábeis — 3º Semestre</option>
+      </optgroup>
+      <optgroup label="Redes de Computadores">
+        <option value="redes_tads1">TADS — 1º Semestre</option>
+        <option value="redes_tads3">TADS — 3º Semestre</option>
+      </optgroup>
+      <optgroup label="Modelagem de Dados">
+        <option value="modelagem_tads1">TADS — 1º Semestre</option>
+      </optgroup>
+      <optgroup label="Lógica e Matemática Computacional">
+        <option value="logica_tads2">TADS — 2º Semestre</option>
+      </optgroup>
+    </select>
+
+    <label>Localização</label>
+    <div class="geo-status obtendo" id="geo-status">
+      <div class="dot"></div>
+      <span id="geo-texto">Obtendo localização...</span>
+    </div>
+
+    <button type="submit" id="btn-enviar" disabled>Registrar presença</button>
+
+    <div class="resultado" id="resultado"></div>
+  </form>
+</div>
+
+<div class="rodape">Os dados de localização são usados apenas para validar sua presença no campus.</div>
+
+<script>
+const API_URL = 'https://script.google.com/macros/s/AKfycbwAofMUf1dZVA4Z7bleLvvGatCKAbCOVVRknDbem4nCBm8oyQ8_VtvnxWgsT0CI4ANryQ/exec';
+
+let coords = null;
+
+const geoStatus  = document.getElementById('geo-status');
+const geoTexto   = document.getElementById('geo-texto');
+const btnEnviar  = document.getElementById('btn-enviar');
+const resultado  = document.getElementById('resultado');
+
+function setGeo(estado, texto) {
+  geoStatus.className = 'geo-status ' + estado;
+  geoTexto.textContent = texto;
+}
+
+function tentarGeo() {
+  if (!navigator.geolocation) {
+    setGeo('erro', 'Geolocalização não suportada neste dispositivo.');
+    return;
+  }
+  setGeo('obtendo', 'Obtendo localização...');
+  navigator.geolocation.getCurrentPosition(
+    pos => {
+      coords = { latitude: pos.coords.latitude, longitude: pos.coords.longitude };
+      setGeo('ok', 'Localização obtida ✓');
+      btnEnviar.disabled = false;
+    },
+    err => {
+      const msgs = {
+        1: 'Permissão de localização negada. Permita o acesso e recarregue.',
+        2: 'Não foi possível determinar sua localização. Tente novamente.',
+        3: 'Tempo esgotado ao obter localização. Tente novamente.',
+      };
+      setGeo('erro', msgs[err.code] || 'Erro ao obter localização.');
+      btnEnviar.disabled = true;
+    },
+    { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
+  );
+}
+
+document.getElementById('form').addEventListener('submit', async function(e) {
+  e.preventDefault();
+
+  if (!coords) { tentarGeo(); return; }
+
+  const ra    = document.getElementById('ra').value.trim();
+  const nome  = document.getElementById('nome').value.trim();
+  const turma = document.getElementById('turma').value;
+
+  if (!ra || !nome || !turma) return;
+
+  btnEnviar.disabled = true;
+  btnEnviar.innerHTML = '<span class="spinner"></span>Enviando...';
+  resultado.style.display = 'none';
+
+  try {
+    const resp = await fetch(API_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        ra, nome, turma,
+        latitude:  coords.latitude,
+        longitude: coords.longitude
+      })
+    });
+
+    const json = await resp.json();
+
+    resultado.style.display = 'block';
+    if (json.ok) {
+      resultado.className = 'resultado sucesso';
+      resultado.textContent = '✅ ' + json.mensagem;
+      document.getElementById('form').reset();
+      coords = null;
+      setGeo('obtendo', 'Obtendo localização...');
+      tentarGeo();
+    } else {
+      resultado.className = 'resultado erro';
+      resultado.textContent = '❌ ' + json.erro;
+      btnEnviar.disabled = false;
+    }
+
+  } catch (err) {
+    resultado.style.display = 'block';
+    resultado.className = 'resultado erro';
+    resultado.textContent = '❌ Falha na conexão. Verifique o sinal e tente novamente.';
+    btnEnviar.disabled = false;
+  }
+
+  btnEnviar.innerHTML = 'Registrar presença';
+});
+
+// Inicia geolocalização ao carregar
+tentarGeo();
+</script>
+</body>
+</html>
