@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>Chamada — Anhanguera Itaquera</title>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
@@ -33,6 +34,69 @@
 
   .divider { height: 1px; background: #eef0f4; margin: 16px 0; }
 
+  /* ── Tela de login ── */
+  #tela-login { text-align: center; }
+
+  #tela-login p {
+    font-size: 14px;
+    color: #4a5568;
+    margin-bottom: 24px;
+    line-height: 1.6;
+  }
+
+  #google-btn-wrap {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 12px;
+  }
+
+  #login-erro {
+    font-size: 13px;
+    color: #991b1b;
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    border-radius: 8px;
+    padding: 10px 14px;
+    display: none;
+    margin-top: 12px;
+  }
+
+  /* ── Usuário logado ── */
+  #usuario-logado {
+    display: none;
+    align-items: center;
+    gap: 10px;
+    background: #f0fdf4;
+    border: 1.5px solid #bbf7d0;
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin-bottom: 20px;
+  }
+
+  #usuario-logado img {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  #usuario-logado .info { flex: 1; }
+  #usuario-logado .info .nome-google { font-size: 13px; font-weight: 600; color: #166534; }
+  #usuario-logado .info .email-google { font-size: 11px; color: #4a7c59; }
+
+  #btn-sair {
+    font-size: 11px;
+    color: #4a7c59;
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-decoration: underline;
+    padding: 0;
+    white-space: nowrap;
+  }
+
+  /* ── Formulário ── */
+  #tela-form { display: none; }
+
   label {
     display: block;
     font-size: 12px;
@@ -42,6 +106,8 @@
     text-transform: uppercase;
     margin-bottom: 6px;
   }
+
+  label .obrig { color: #ef4444; margin-left: 2px; }
 
   input, select {
     width: 100%;
@@ -53,12 +119,21 @@
     background: #f8fafc;
     outline: none;
     transition: border-color 0.2s;
-    margin-bottom: 16px;
+    margin-bottom: 4px;
     appearance: none;
   }
 
   input:focus, select:focus { border-color: #1a7a4a; background: #fff; }
   input::placeholder { color: #b0b8c8; }
+  input.invalido, select.invalido { border-color: #ef4444; background: #fff5f5; }
+
+  .campo-erro {
+    font-size: 11px;
+    color: #ef4444;
+    margin-bottom: 12px;
+    min-height: 16px;
+    display: block;
+  }
 
   .geo-status {
     display: flex;
@@ -68,7 +143,7 @@
     border: 1.5px solid #e2e8f0;
     border-radius: 8px;
     padding: 12px 14px;
-    margin-bottom: 20px;
+    margin-bottom: 4px;
     font-size: 13px;
     color: #4a5568;
   }
@@ -101,6 +176,7 @@
     cursor: pointer;
     transition: background 0.2s, transform 0.1s;
     letter-spacing: 0.02em;
+    margin-top: 8px;
   }
 
   button[type=submit]:active   { transform: scale(0.98); }
@@ -150,62 +226,155 @@
   </div>
   <div class="divider"></div>
 
-  <form id="form" autocomplete="off">
+  <!-- Tela de login -->
+  <div id="tela-login">
+    <p>Faça login com sua conta Google para registrar sua presença.<br>É necessário usar seu e-mail institucional ou pessoal cadastrado na Anhanguera.</p>
+    <div id="google-btn-wrap">
+      <div id="g_id_onload"
+        data-client_id="137101512318-fu2p0dc5vnvdm6n3obpfodu91g763msc.apps.googleusercontent.com"
+        data-callback="onGoogleLogin"
+        data-auto_prompt="false">
+      </div>
+      <div class="g_id_signin"
+        data-type="standard"
+        data-size="large"
+        data-theme="outline"
+        data-text="sign_in_with"
+        data-shape="rectangular"
+        data-logo_alignment="left">
+      </div>
+    </div>
+    <div id="login-erro"></div>
+  </div>
 
-    <label for="ra">RA — Registro Acadêmico</label>
-    <input type="text" id="ra" placeholder="Ex: 4196579" inputmode="numeric" required>
+  <!-- Formulário (visível após login) -->
+  <div id="tela-form">
 
-    <label for="nome">Nome completo</label>
-    <input type="text" id="nome" placeholder="Como consta na matrícula" required>
-
-    <label for="turma">Turma / Disciplina</label>
-    <select id="turma" required>
-      <option value="">— Selecione —</option>
-      <optgroup label="Matemática Financeira">
-        <option value="matfin_adm1">ADM — 1º Semestre</option>
-        <option value="matfin_adm3">ADM — 3º Semestre</option>
-        <option value="matfin_cc2">Ciências Contábeis — 2º Semestre</option>
-        <option value="matfin_cc3">Ciências Contábeis — 3º Semestre</option>
-      </optgroup>
-      <optgroup label="Redes de Computadores">
-        <option value="redes_tads1">TADS — 1º Semestre</option>
-        <option value="redes_tads3">TADS — 3º Semestre</option>
-      </optgroup>
-      <optgroup label="Modelagem de Dados">
-        <option value="modelagem_tads1">TADS — 1º Semestre</option>
-      </optgroup>
-      <optgroup label="Lógica e Matemática Computacional">
-        <option value="logica_tads2">TADS — 2º Semestre</option>
-      </optgroup>
-    </select>
-
-    <label>Localização</label>
-    <div class="geo-status obtendo" id="geo-status">
-      <div class="dot"></div>
-      <span id="geo-texto">Obtendo localização...</span>
+    <div id="usuario-logado">
+      <img id="foto-google" src="" alt="">
+      <div class="info">
+        <div class="nome-google" id="nome-google-display"></div>
+        <div class="email-google" id="email-google-display"></div>
+      </div>
+      <button id="btn-sair" onclick="sair()">Sair</button>
     </div>
 
-    <button type="submit" id="btn-enviar" disabled>Registrar presença</button>
+    <form id="form" autocomplete="off" novalidate>
 
-    <div class="resultado" id="resultado"></div>
-  </form>
+      <label for="ra">RA — Registro Acadêmico <span class="obrig">*</span></label>
+      <input type="text" id="ra" placeholder="Ex: 4196579" inputmode="numeric">
+      <span class="campo-erro" id="erro-ra"></span>
+
+      <label for="nome">Nome completo <span class="obrig">*</span></label>
+      <input type="text" id="nome" placeholder="Como consta na matrícula">
+      <span class="campo-erro" id="erro-nome"></span>
+
+      <label for="turma">Turma / Disciplina <span class="obrig">*</span></label>
+      <select id="turma">
+        <option value="">— Selecione —</option>
+        <optgroup label="Matemática Financeira">
+          <option value="matfin_adm1">ADM — 1º Semestre</option>
+          <option value="matfin_adm3">ADM — 3º Semestre</option>
+          <option value="matfin_cc2">Ciências Contábeis — 2º Semestre</option>
+          <option value="matfin_cc3">Ciências Contábeis — 3º Semestre</option>
+        </optgroup>
+        <optgroup label="Redes de Computadores">
+          <option value="redes_tads1">TADS — 1º Semestre</option>
+          <option value="redes_tads3">TADS — 3º Semestre</option>
+        </optgroup>
+        <optgroup label="Modelagem de Dados">
+          <option value="modelagem_tads1">TADS — 1º Semestre</option>
+        </optgroup>
+        <optgroup label="Lógica e Matemática Computacional">
+          <option value="logica_tads2">TADS — 2º Semestre</option>
+        </optgroup>
+      </select>
+      <span class="campo-erro" id="erro-turma"></span>
+
+      <label>Localização <span class="obrig">*</span></label>
+      <div class="geo-status obtendo" id="geo-status">
+        <div class="dot"></div>
+        <span id="geo-texto">Obtendo localização...</span>
+      </div>
+      <span class="campo-erro" id="erro-geo"></span>
+
+      <button type="submit" id="btn-enviar" disabled>Registrar presença</button>
+
+      <div class="resultado" id="resultado"></div>
+    </form>
+  </div>
 </div>
 
-<div class="rodape">Os dados de localização são usados apenas para validar sua presença no campus.</div>
+<div class="rodape">Os dados de localização e conta Google são usados apenas para validar presença no campus.</div>
 
 <script>
 const API_URL = 'https://script.google.com/macros/s/AKfycbwAofMUf1dZVA4Z7bleLvvGatCKAbCOVVRknDbem4nCBm8oyQ8_VtvnxWgsT0CI4ANryQ/exec';
 
-let coords = null;
+let coords   = null;
+let geoOk    = false;
+let dadosGoogle = null;
 
 const geoStatus = document.getElementById('geo-status');
 const geoTexto  = document.getElementById('geo-texto');
 const btnEnviar = document.getElementById('btn-enviar');
 const resultado = document.getElementById('resultado');
 
+// ── Google OAuth ──────────────────────────────────────────
+function onGoogleLogin(response) {
+  try {
+    const payload = parseJwt(response.credential);
+    dadosGoogle = {
+      email: payload.email,
+      nome:  payload.name,
+      foto:  payload.picture,
+      token: response.credential
+    };
+
+    document.getElementById('nome-google-display').textContent = payload.name;
+    document.getElementById('email-google-display').textContent = payload.email;
+    document.getElementById('foto-google').src = payload.picture;
+    document.getElementById('usuario-logado').style.display = 'flex';
+
+    document.getElementById('tela-login').style.display = 'none';
+    document.getElementById('tela-form').style.display = 'block';
+
+    tentarGeo();
+  } catch(e) {
+    mostrarErroLogin('Erro ao processar login. Tente novamente.');
+  }
+}
+
+function parseJwt(token) {
+  const base64 = token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
+  return JSON.parse(decodeURIComponent(atob(base64).split('').map(c =>
+    '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
+  ).join('')));
+}
+
+function mostrarErroLogin(msg) {
+  const el = document.getElementById('login-erro');
+  el.textContent = msg;
+  el.style.display = 'block';
+}
+
+function sair() {
+  dadosGoogle = null;
+  coords = null;
+  geoOk  = false;
+  document.getElementById('tela-login').style.display = 'block';
+  document.getElementById('tela-form').style.display  = 'none';
+  document.getElementById('usuario-logado').style.display = 'none';
+  document.getElementById('form').reset();
+  document.getElementById('resultado').style.display = 'none';
+  limparErros();
+}
+
+// ── Geolocalização ────────────────────────────────────────
 function setGeo(estado, texto) {
   geoStatus.className = 'geo-status ' + estado;
   geoTexto.textContent = texto;
+  geoOk = estado === 'ok';
+  atualizarBotao();
 }
 
 function tentarGeo() {
@@ -218,56 +387,98 @@ function tentarGeo() {
     pos => {
       coords = { latitude: pos.coords.latitude, longitude: pos.coords.longitude };
       setGeo('ok', 'Localização obtida ✓');
-      btnEnviar.disabled = false;
     },
     err => {
       const msgs = {
-        1: 'Permissão negada. Permita a localização e recarregue a página.',
-        2: 'Não foi possível determinar sua localização. Tente novamente.',
+        1: 'Permissão negada. Permita a localização e recarregue.',
+        2: 'Não foi possível obter localização. Tente novamente.',
         3: 'Tempo esgotado. Tente novamente.',
       };
       setGeo('erro', msgs[err.code] || 'Erro ao obter localização.');
-      btnEnviar.disabled = true;
     },
     { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
   );
 }
 
-// Envia via GET com parâmetros na URL — contorna CORS do Apps Script
-function enviarGet(params) {
-  return new Promise((resolve, reject) => {
-    const url = API_URL + '?' + new URLSearchParams(params).toString();
+function atualizarBotao() {
+  btnEnviar.disabled = !geoOk;
+}
 
-    // Usa no-cors fetch — não lê a resposta, mas grava no script
-    // Para ler a resposta usamos script tag (JSONP-like via fetch redirect)
-    fetch(url, { method: 'GET', redirect: 'follow' })
-      .then(r => r.json())
-      .then(resolve)
-      .catch(reject);
+// ── Validação ─────────────────────────────────────────────
+function limparErros() {
+  ['ra','nome','turma','geo'].forEach(f => {
+    const el = document.getElementById('erro-' + f);
+    if (el) el.textContent = '';
+    const input = document.getElementById(f);
+    if (input) input.classList.remove('invalido');
   });
 }
 
+function validar() {
+  limparErros();
+  let ok = true;
+
+  const ra = document.getElementById('ra').value.trim();
+  if (!ra) {
+    document.getElementById('erro-ra').textContent = 'O RA é obrigatório.';
+    document.getElementById('ra').classList.add('invalido');
+    ok = false;
+  } else if (!/^\d{6,11}$/.test(ra.replace(/\D/g,''))) {
+    document.getElementById('erro-ra').textContent = 'RA inválido — informe apenas números.';
+    document.getElementById('ra').classList.add('invalido');
+    ok = false;
+  }
+
+  const nome = document.getElementById('nome').value.trim();
+  if (!nome) {
+    document.getElementById('erro-nome').textContent = 'O nome completo é obrigatório.';
+    document.getElementById('nome').classList.add('invalido');
+    ok = false;
+  } else if (nome.split(' ').filter(Boolean).length < 2) {
+    document.getElementById('erro-nome').textContent = 'Informe o nome completo (nome e sobrenome).';
+    document.getElementById('nome').classList.add('invalido');
+    ok = false;
+  }
+
+  const turma = document.getElementById('turma').value;
+  if (!turma) {
+    document.getElementById('erro-turma').textContent = 'Selecione a turma.';
+    document.getElementById('turma').classList.add('invalido');
+    ok = false;
+  }
+
+  if (!geoOk || !coords) {
+    document.getElementById('erro-geo').textContent = 'Aguarde a localização ser obtida.';
+    ok = false;
+  }
+
+  return ok;
+}
+
+// ── Envio ─────────────────────────────────────────────────
 document.getElementById('form').addEventListener('submit', async function(e) {
   e.preventDefault();
-
-  if (!coords) { tentarGeo(); return; }
+  if (!validar()) return;
 
   const ra    = document.getElementById('ra').value.trim();
   const nome  = document.getElementById('nome').value.trim();
   const turma = document.getElementById('turma').value;
-
-  if (!ra || !nome || !turma) return;
 
   btnEnviar.disabled = true;
   btnEnviar.innerHTML = '<span class="spinner"></span>Enviando...';
   resultado.style.display = 'none';
 
   try {
-    const json = await enviarGet({
+    const url = API_URL + '?' + new URLSearchParams({
       ra, nome, turma,
-      latitude:  coords.latitude,
-      longitude: coords.longitude
-    });
+      latitude:   coords.latitude,
+      longitude:  coords.longitude,
+      email:      dadosGoogle.email,
+      nomeGoogle: dadosGoogle.nome
+    }).toString();
+
+    const resp = await fetch(url, { method: 'GET', redirect: 'follow' });
+    const json = await resp.json();
 
     resultado.style.display = 'block';
 
@@ -276,6 +487,7 @@ document.getElementById('form').addEventListener('submit', async function(e) {
       resultado.textContent = '✅ ' + json.mensagem;
       document.getElementById('form').reset();
       coords = null;
+      geoOk  = false;
       tentarGeo();
     } else {
       resultado.className = 'resultado erro';
@@ -293,7 +505,14 @@ document.getElementById('form').addEventListener('submit', async function(e) {
   btnEnviar.innerHTML = 'Registrar presença';
 });
 
-tentarGeo();
+// Limpa erro ao digitar
+['ra','nome','turma'].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) el.addEventListener('input', () => {
+    document.getElementById('erro-' + id).textContent = '';
+    el.classList.remove('invalido');
+  });
+});
 </script>
 </body>
 </html>
