@@ -34,9 +34,7 @@
 
   .divider { height: 1px; background: #eef0f4; margin: 16px 0; }
 
-  /* ── Tela de login ── */
   #tela-login { text-align: center; }
-
   #tela-login p {
     font-size: 14px;
     color: #4a5568;
@@ -44,11 +42,7 @@
     line-height: 1.6;
   }
 
-  #google-btn-wrap {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 12px;
-  }
+  #google-btn-wrap { display: flex; justify-content: center; margin-bottom: 12px; }
 
   #login-erro {
     font-size: 13px;
@@ -61,7 +55,6 @@
     margin-top: 12px;
   }
 
-  /* ── Usuário logado ── */
   #usuario-logado {
     display: none;
     align-items: center;
@@ -73,28 +66,17 @@
     margin-bottom: 20px;
   }
 
-  #usuario-logado img {
-    width: 32px; height: 32px;
-    border-radius: 50%;
-    object-fit: cover;
-  }
-
+  #usuario-logado img { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; }
   #usuario-logado .info { flex: 1; }
   #usuario-logado .info .nome-google { font-size: 13px; font-weight: 600; color: #166534; }
   #usuario-logado .info .email-google { font-size: 11px; color: #4a7c59; }
 
   #btn-sair {
-    font-size: 11px;
-    color: #4a7c59;
-    background: none;
-    border: none;
-    cursor: pointer;
-    text-decoration: underline;
-    padding: 0;
-    white-space: nowrap;
+    font-size: 11px; color: #4a7c59; background: none;
+    border: none; cursor: pointer; text-decoration: underline;
+    padding: 0; white-space: nowrap;
   }
 
-  /* ── Formulário ── */
   #tela-form { display: none; }
 
   label {
@@ -128,11 +110,8 @@
   input.invalido, select.invalido { border-color: #ef4444; background: #fff5f5; }
 
   .campo-erro {
-    font-size: 11px;
-    color: #ef4444;
-    margin-bottom: 12px;
-    min-height: 16px;
-    display: block;
+    font-size: 11px; color: #ef4444;
+    margin-bottom: 12px; min-height: 16px; display: block;
   }
 
   .geo-status {
@@ -150,9 +129,7 @@
 
   .geo-status .dot {
     width: 10px; height: 10px;
-    border-radius: 50%;
-    flex-shrink: 0;
-    background: #cbd5e0;
+    border-radius: 50%; flex-shrink: 0; background: #cbd5e0;
   }
 
   .geo-status.obtendo .dot { background: #f59e0b; animation: pulse 1s infinite; }
@@ -214,6 +191,13 @@
     font-size: 11px;
     color: #b0b8c8;
     text-align: center;
+    line-height: 1.8;
+  }
+
+  .rodape .assinatura {
+    font-size: 11px;
+    color: #a0aec0;
+    font-style: italic;
   }
 </style>
 </head>
@@ -226,9 +210,8 @@
   </div>
   <div class="divider"></div>
 
-  <!-- Tela de login -->
   <div id="tela-login">
-    <p>Faça login com sua conta Google para registrar sua presença.<br>É necessário usar seu e-mail institucional ou pessoal cadastrado na Anhanguera.</p>
+    <p>Faça login com sua conta Google para registrar sua presença.<br>Use o e-mail institucional ou pessoal cadastrado na Anhanguera.</p>
     <div id="google-btn-wrap">
       <div id="g_id_onload"
         data-client_id="137101512318-fu2p0dc5vnvdm6n3obpfodu91g763msc.apps.googleusercontent.com"
@@ -247,9 +230,7 @@
     <div id="login-erro"></div>
   </div>
 
-  <!-- Formulário (visível após login) -->
   <div id="tela-form">
-
     <div id="usuario-logado">
       <img id="foto-google" src="" alt="">
       <div class="info">
@@ -305,7 +286,10 @@
   </div>
 </div>
 
-<div class="rodape">Os dados de localização e conta Google são usados apenas para validar presença no campus.</div>
+<div class="rodape">
+  Os dados de localização e conta Google são usados apenas para validar presença no campus.<br>
+  <span class="assinatura">by Roberto Maia</span>
+</div>
 
 <script>
 const API_URL = 'https://script.google.com/macros/s/AKfycbwAofMUf1dZVA4Z7bleLvvGatCKAbCOVVRknDbem4nCBm8oyQ8_VtvnxWgsT0CI4ANryQ/exec';
@@ -319,25 +303,16 @@ const geoTexto  = document.getElementById('geo-texto');
 const btnEnviar = document.getElementById('btn-enviar');
 const resultado = document.getElementById('resultado');
 
-// ── Google OAuth ──────────────────────────────────────────
 function onGoogleLogin(response) {
   try {
     const payload = parseJwt(response.credential);
-    dadosGoogle = {
-      email: payload.email,
-      nome:  payload.name,
-      foto:  payload.picture,
-      token: response.credential
-    };
-
+    dadosGoogle = { email: payload.email, nome: payload.name, foto: payload.picture };
     document.getElementById('nome-google-display').textContent = payload.name;
     document.getElementById('email-google-display').textContent = payload.email;
     document.getElementById('foto-google').src = payload.picture;
     document.getElementById('usuario-logado').style.display = 'flex';
-
     document.getElementById('tela-login').style.display = 'none';
     document.getElementById('tela-form').style.display = 'block';
-
     tentarGeo();
   } catch(e) {
     mostrarErroLogin('Erro ao processar login. Tente novamente.');
@@ -358,9 +333,7 @@ function mostrarErroLogin(msg) {
 }
 
 function sair() {
-  dadosGoogle = null;
-  coords = null;
-  geoOk  = false;
+  dadosGoogle = null; coords = null; geoOk = false;
   document.getElementById('tela-login').style.display = 'block';
   document.getElementById('tela-form').style.display  = 'none';
   document.getElementById('usuario-logado').style.display = 'none';
@@ -369,19 +342,15 @@ function sair() {
   limparErros();
 }
 
-// ── Geolocalização ────────────────────────────────────────
 function setGeo(estado, texto) {
   geoStatus.className = 'geo-status ' + estado;
   geoTexto.textContent = texto;
   geoOk = estado === 'ok';
-  atualizarBotao();
+  btnEnviar.disabled = !geoOk;
 }
 
 function tentarGeo() {
-  if (!navigator.geolocation) {
-    setGeo('erro', 'Geolocalização não suportada neste dispositivo.');
-    return;
-  }
+  if (!navigator.geolocation) { setGeo('erro', 'Geolocalização não suportada neste dispositivo.'); return; }
   setGeo('obtendo', 'Obtendo localização...');
   navigator.geolocation.getCurrentPosition(
     pos => {
@@ -400,11 +369,6 @@ function tentarGeo() {
   );
 }
 
-function atualizarBotao() {
-  btnEnviar.disabled = !geoOk;
-}
-
-// ── Validação ─────────────────────────────────────────────
 function limparErros() {
   ['ra','nome','turma','geo'].forEach(f => {
     const el = document.getElementById('erro-' + f);
@@ -435,7 +399,7 @@ function validar() {
     document.getElementById('nome').classList.add('invalido');
     ok = false;
   } else if (nome.split(' ').filter(Boolean).length < 2) {
-    document.getElementById('erro-nome').textContent = 'Informe o nome completo (nome e sobrenome).';
+    document.getElementById('erro-nome').textContent = 'Informe nome e sobrenome.';
     document.getElementById('nome').classList.add('invalido');
     ok = false;
   }
@@ -455,7 +419,6 @@ function validar() {
   return ok;
 }
 
-// ── Envio ─────────────────────────────────────────────────
 document.getElementById('form').addEventListener('submit', async function(e) {
   e.preventDefault();
   if (!validar()) return;
@@ -481,20 +444,17 @@ document.getElementById('form').addEventListener('submit', async function(e) {
     const json = await resp.json();
 
     resultado.style.display = 'block';
-
     if (json.ok) {
       resultado.className = 'resultado sucesso';
       resultado.textContent = '✅ ' + json.mensagem;
       document.getElementById('form').reset();
-      coords = null;
-      geoOk  = false;
+      coords = null; geoOk = false;
       tentarGeo();
     } else {
       resultado.className = 'resultado erro';
       resultado.textContent = '❌ ' + json.erro;
       btnEnviar.disabled = false;
     }
-
   } catch (err) {
     resultado.style.display = 'block';
     resultado.className = 'resultado erro';
@@ -505,7 +465,6 @@ document.getElementById('form').addEventListener('submit', async function(e) {
   btnEnviar.innerHTML = 'Registrar presença';
 });
 
-// Limpa erro ao digitar
 ['ra','nome','turma'].forEach(id => {
   const el = document.getElementById(id);
   if (el) el.addEventListener('input', () => {
