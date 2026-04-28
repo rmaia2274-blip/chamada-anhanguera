@@ -2,454 +2,113 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>Chamada Digital — Anhanguera</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Chamada Digital — Anhanguera Itaquera</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
 <script src="https://accounts.google.com/gsi/client" async defer></script>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --verde:       #1a5c3a;
-    --verde-med:   #2d7a52;
-    --verde-light: #e8f5ee;
-    --verde-glow:  rgba(26,92,58,0.15);
-    --ouro:        #c9a84c;
-    --ouro-light:  #f5ecd4;
-    --texto:       #1a1a2e;
-    --texto-med:   #4a5568;
-    --texto-leve:  #8892a4;
-    --borda:       #dde3ed;
-    --bg:          #f4f6fa;
-    --branco:      #ffffff;
-    --erro:        #c0392b;
-    --erro-bg:     #fdf2f2;
-    --radius:      14px;
-    --shadow:      0 4px 24px rgba(26,92,58,0.10), 0 1px 4px rgba(0,0,0,0.06);
+  :root{
+    --verde-escuro:#0f5132;
+    --verde:#1a7a4a;
+    --verde-claro:#e8f5ee;
+    --ouro:#c9a961;
+    --bg:#f7f5f0;
+    --texto:#1a2332;
+    --texto-leve:#6b7280;
+    --borda:#d8d4c8;
+    --erro:#b91c1c;
+    --erro-bg:#fef2f2;
+    --sucesso:#0f5132;
+    --sucesso-bg:#e8f5ee;
+    --aviso:#b45309;
+    --aviso-bg:#fef3c7;
   }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--bg);font-family:'Inter',sans-serif;color:var(--texto);min-height:100vh}
+  .header{background:var(--verde-escuro);color:#fff;padding:32px 20px 28px;text-align:center;position:relative}
+  .header-icone{font-size:36px;display:block;margin-bottom:8px}
+  .header h1{font-family:'Playfair Display',serif;font-size:26px;font-weight:700;letter-spacing:0.3px}
+  .header p{font-size:13px;opacity:0.85;margin-top:4px;letter-spacing:1px;text-transform:uppercase}
+  .linha-ouro{height:3px;background:var(--ouro);margin-top:18px;width:60px;margin-left:auto;margin-right:auto}
+  .card{background:#fff;margin:0 16px;margin-top:-16px;padding:28px 22px;border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,0.06);border:1px solid var(--borda);position:relative;z-index:2}
 
-  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  /* Login */
+  .login-titulo{font-family:'Playfair Display',serif;font-size:22px;text-align:center;margin-bottom:8px;color:var(--verde-escuro)}
+  .login-sub{font-size:14px;text-align:center;color:var(--texto-leve);margin-bottom:24px;line-height:1.5}
+  #google-btn-wrap{display:flex;justify-content:center;margin:20px 0}
+  #login-erro{color:var(--erro);font-size:13px;text-align:center;margin-top:12px}
 
-  body {
-    font-family: 'DM Sans', sans-serif;
-    background: var(--bg);
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    padding: 0 0 48px;
-    position: relative;
-    overflow-x: hidden;
-  }
+  /* Telas */
+  #tela-form,#tela-confirmacao{display:none}
 
-  /* Fundo decorativo */
-  body::before {
-    content: '';
-    position: fixed;
-    top: -120px; right: -120px;
-    width: 400px; height: 400px;
-    background: radial-gradient(circle, rgba(26,92,58,0.08) 0%, transparent 70%);
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 0;
-  }
+  /* Usuário logado */
+  #usuario-logado{display:flex;align-items:center;gap:12px;padding:12px;background:var(--verde-claro);border-radius:6px;margin-bottom:20px}
+  #usuario-logado img{width:40px;height:40px;border-radius:50%}
+  #usuario-logado .info{flex:1;min-width:0}
+  #usuario-logado .ng{font-size:13px;font-weight:600;color:var(--verde-escuro);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  #usuario-logado .eg{font-size:11px;color:var(--texto-leve);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  #btn-sair{background:none;border:1px solid var(--verde);color:var(--verde);padding:5px 10px;border-radius:4px;font-size:11px;cursor:pointer;flex-shrink:0;font-family:inherit}
 
-  body::after {
-    content: '';
-    position: fixed;
-    bottom: -80px; left: -80px;
-    width: 300px; height: 300px;
-    background: radial-gradient(circle, rgba(201,168,76,0.07) 0%, transparent 70%);
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 0;
-  }
+  /* Form */
+  .secao-titulo{font-size:11px;color:var(--texto-leve);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:14px;font-weight:600}
+  label{display:block;font-size:13px;font-weight:600;margin-bottom:6px;margin-top:14px;color:var(--texto)}
+  .obrig{color:var(--erro)}
+  input,select{width:100%;padding:12px;font-size:15px;border:1px solid var(--borda);border-radius:5px;background:#fff;font-family:inherit;color:var(--texto);-webkit-appearance:none;appearance:none}
+  input:focus,select:focus{outline:none;border-color:var(--verde);box-shadow:0 0 0 3px rgba(26,122,74,0.12)}
+  input.invalido,select.invalido{border-color:var(--erro)}
+  .select-wrap{position:relative}
+  .select-wrap::after{content:'▼';position:absolute;right:14px;top:50%;transform:translateY(-50%);color:var(--texto-leve);font-size:11px;pointer-events:none}
+  .campo-erro{display:block;color:var(--erro);font-size:12px;margin-top:4px;min-height:14px}
 
-  /* Header */
-  .header {
-    width: 100%;
-    background: var(--verde);
-    padding: 28px 24px 32px;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-    margin-bottom: -20px;
-  }
-
-  .header::before {
-    content: '';
-    position: absolute;
-    bottom: -1px; left: 0; right: 0;
-    height: 24px;
-    background: var(--bg);
-    border-radius: 24px 24px 0 0;
-  }
-
-  .header-icone {
-    font-size: 32px;
-    margin-bottom: 8px;
-    display: block;
-    animation: float 3s ease-in-out infinite;
-  }
-
-  @keyframes float {
-    0%, 100% { transform: translateY(0); }
-    50%       { transform: translateY(-4px); }
-  }
-
-  .header h1 {
-    font-family: 'Playfair Display', serif;
-    font-size: 22px;
-    color: var(--branco);
-    letter-spacing: 0.02em;
-    margin-bottom: 4px;
-  }
-
-  .header p {
-    font-size: 12px;
-    color: rgba(255,255,255,0.65);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-  }
-
-  .header .linha-ouro {
-    width: 40px;
-    height: 2px;
-    background: var(--ouro);
-    margin: 12px auto 0;
-    border-radius: 2px;
-  }
-
-  /* Card principal */
-  .card {
-    background: var(--branco);
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-    padding: 28px 24px;
-    width: calc(100% - 32px);
-    max-width: 420px;
-    position: relative;
-    z-index: 1;
-    margin-top: 24px;
-    animation: slideUp 0.4s cubic-bezier(0.16,1,0.3,1);
-  }
-
-  @keyframes slideUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-
-  /* Tela login */
-  #tela-login { text-align: center; }
-
-  .login-titulo {
-    font-family: 'Playfair Display', serif;
-    font-size: 20px;
-    color: var(--texto);
-    margin-bottom: 8px;
-  }
-
-  .login-sub {
-    font-size: 13px;
-    color: var(--texto-leve);
-    line-height: 1.6;
-    margin-bottom: 28px;
-  }
-
-  #google-btn-wrap { display: flex; justify-content: center; margin-bottom: 16px; }
-
-  #login-erro {
-    font-size: 13px; color: var(--erro);
-    background: var(--erro-bg);
-    border: 1px solid #f5c6c6;
-    border-radius: 8px;
-    padding: 10px 14px;
-    display: none; margin-top: 12px;
-  }
-
-  /* Badge usuário logado */
-  #usuario-logado {
-    display: none;
-    align-items: center;
-    gap: 12px;
-    background: var(--verde-light);
-    border: 1.5px solid #b7dfc9;
-    border-radius: 10px;
-    padding: 12px 14px;
-    margin-bottom: 24px;
-    animation: fadeIn 0.3s ease;
-  }
-
-  @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
-
-  #usuario-logado img {
-    width: 36px; height: 36px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 2px solid var(--verde-med);
-  }
-
-  #usuario-logado .info { flex: 1; min-width: 0; }
-  #usuario-logado .info .ng { font-size: 13px; font-weight: 600; color: var(--verde); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  #usuario-logado .info .eg { font-size: 11px; color: #4a7c59; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-
-  #btn-sair {
-    font-size: 11px; color: #4a7c59; background: none;
-    border: none; cursor: pointer; text-decoration: underline;
-    padding: 0; white-space: nowrap; flex-shrink: 0;
-  }
-
-  /* Formulário */
-  #tela-form { display: none; }
-
-  .secao-titulo {
-    font-family: 'Playfair Display', serif;
-    font-size: 16px;
-    color: var(--texto);
-    margin-bottom: 20px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid var(--borda);
-  }
-
-  label {
-    display: block;
-    font-size: 11px;
-    font-weight: 600;
-    color: var(--texto-med);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    margin-bottom: 6px;
-  }
-
-  label .obrig { color: var(--ouro); margin-left: 2px; }
-
-  input, select {
-    width: 100%;
-    padding: 13px 16px;
-    border: 1.5px solid var(--borda);
-    border-radius: 10px;
-    font-size: 15px;
-    font-family: 'DM Sans', sans-serif;
-    color: var(--texto);
-    background: #fafbfc;
-    outline: none;
-    transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
-    margin-bottom: 4px;
-    appearance: none;
-  }
-
-  input:focus, select:focus {
-    border-color: var(--verde-med);
-    background: var(--branco);
-    box-shadow: 0 0 0 3px var(--verde-glow);
-  }
-
-  input::placeholder { color: #c0c8d4; }
-  input.invalido, select.invalido { border-color: var(--erro); background: var(--erro-bg); }
-
-  .campo-erro {
-    font-size: 11px; color: var(--erro);
-    margin-bottom: 14px; min-height: 16px; display: block;
-  }
-
-  /* Geo status */
-  .geo-status {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    background: #fafbfc;
-    border: 1.5px solid var(--borda);
-    border-radius: 10px;
-    padding: 13px 16px;
-    margin-bottom: 4px;
-    font-size: 13px;
-    color: var(--texto-med);
-    transition: border-color 0.3s, background 0.3s;
-  }
-
-  .geo-status.ok { border-color: #b7dfc9; background: var(--verde-light); color: var(--verde); }
-  .geo-status.erro { border-color: #f5c6c6; background: var(--erro-bg); color: var(--erro); }
-
-  .dot {
-    width: 10px; height: 10px;
-    border-radius: 50%; flex-shrink: 0;
-    background: #cbd5e0;
-    transition: background 0.3s;
-  }
-
-  .geo-status.obtendo .dot { background: var(--ouro); animation: pulse 1s infinite; }
-  .geo-status.ok .dot      { background: #2d7a52; }
-  .geo-status.erro .dot    { background: var(--erro); }
-
-  @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.3;} }
-
-  /* Tela de confirmação */
-  #tela-confirmacao {
-    display: none;
-    animation: slideUp 0.35s cubic-bezier(0.16,1,0.3,1);
-  }
-
-  .confirmacao-card {
-    background: var(--verde-light);
-    border: 1.5px solid #b7dfc9;
-    border-radius: 12px;
-    padding: 20px;
-    margin-bottom: 20px;
-    text-align: center;
-  }
-
-  .confirmacao-icone { font-size: 36px; margin-bottom: 12px; display: block; }
-
-  .confirmacao-label {
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--verde-med);
-    margin-bottom: 16px;
-  }
-
-  .confirmacao-info {
-    background: var(--branco);
-    border-radius: 8px;
-    padding: 14px 16px;
-    margin-bottom: 10px;
-    text-align: left;
-    border: 1px solid #d4ead8;
-  }
-
-  .confirmacao-info .ci-label {
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--texto-leve);
-    margin-bottom: 3px;
-  }
-
-  .confirmacao-info .ci-valor {
-    font-size: 15px;
-    font-weight: 600;
-    color: var(--texto);
-  }
-
-  .confirmacao-info .ci-valor.turma-nome {
-    font-family: 'Playfair Display', serif;
-    color: var(--verde);
-  }
-
-  .geo-confirmada {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 12px;
-    color: var(--verde-med);
-    justify-content: center;
-    margin-top: 4px;
-  }
+  /* Geo */
+  .geo-status{display:flex;align-items:center;gap:10px;padding:11px;border-radius:5px;font-size:13px;margin-top:6px}
+  .geo-status.obtendo{background:#fef3c7;color:#92400e}
+  .geo-status.ok{background:var(--sucesso-bg);color:var(--sucesso)}
+  .geo-status.erro{background:var(--erro-bg);color:var(--erro)}
+  .geo-status .dot{width:8px;height:8px;border-radius:50%;background:currentColor}
+  .geo-status.obtendo .dot{animation:piscar 1s infinite}
+  @keyframes piscar{0%,100%{opacity:1}50%{opacity:0.3}}
 
   /* Botões */
-  .btn-grupo { display: flex; gap: 10px; margin-top: 8px; }
+  .btn-grupo{display:flex;gap:10px;margin-top:20px}
+  .btn{flex:1;padding:14px;font-size:15px;font-weight:600;border:none;border-radius:5px;cursor:pointer;font-family:inherit;transition:all 0.2s}
+  .btn-primario{background:var(--verde-escuro);color:#fff}
+  .btn-primario:hover:not(:disabled){background:var(--verde)}
+  .btn-primario:disabled{background:#9ca3af;cursor:not-allowed}
+  .btn-secundario{background:#fff;color:var(--texto);border:1px solid var(--borda)}
+  .btn-secundario:hover{background:#f3f4f6}
 
-  .btn {
-    flex: 1;
-    padding: 14px;
-    border: none;
-    border-radius: 10px;
-    font-size: 15px;
-    font-family: 'DM Sans', sans-serif;
-    font-weight: 600;
-    cursor: pointer;
-    transition: transform 0.1s, opacity 0.2s, box-shadow 0.2s;
-    letter-spacing: 0.01em;
-  }
-
-  .btn:active { transform: scale(0.97); }
-  .btn:disabled { opacity: 0.45; cursor: default; }
-
-  .btn-primario {
-    background: var(--verde);
-    color: var(--branco);
-    box-shadow: 0 3px 12px rgba(26,92,58,0.25);
-  }
-
-  .btn-primario:hover:not(:disabled) { background: var(--verde-med); box-shadow: 0 4px 16px rgba(26,92,58,0.35); }
-
-  .btn-secundario {
-    background: #f0f2f5;
-    color: var(--texto-med);
-  }
-
-  .btn-secundario:hover { background: #e4e8ef; }
+  /* Confirmação */
+  .confirmacao-card{background:var(--verde-claro);border:1px solid var(--verde);border-radius:6px;padding:20px;margin-bottom:18px}
+  .confirmacao-icone{display:block;text-align:center;font-size:30px;margin-bottom:10px}
+  .confirmacao-label{text-align:center;font-size:13px;color:var(--verde-escuro);font-weight:600;margin-bottom:18px}
+  .confirmacao-info{padding:10px 0;border-bottom:1px solid rgba(15,81,50,0.15)}
+  .confirmacao-info:last-of-type{border-bottom:none}
+  .ci-label{font-size:11px;color:var(--texto-leve);text-transform:uppercase;letter-spacing:1px;margin-bottom:3px}
+  .ci-valor{font-size:15px;font-weight:600;color:var(--texto)}
+  .ci-valor.turma-nome{color:var(--verde-escuro)}
+  .geo-confirmada{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--verde);margin-top:14px;padding-top:12px;border-top:1px solid rgba(15,81,50,0.15)}
 
   /* Resultado */
-  .resultado {
-    display: none;
-    margin-top: 20px;
-    padding: 18px;
-    border-radius: 12px;
-    font-size: 14px;
-    font-weight: 500;
-    text-align: center;
-    line-height: 1.6;
-    animation: fadeIn 0.3s ease;
-  }
+  .resultado{display:none;margin-top:18px;padding:16px;border-radius:5px;font-size:14px;text-align:center}
+  .resultado.sucesso{background:var(--sucesso-bg);color:var(--sucesso);border:1px solid var(--verde)}
+  .resultado.erro{background:var(--erro-bg);color:var(--erro);border:1px solid var(--erro)}
+  .resultado.aviso{background:var(--aviso-bg);color:var(--aviso);border:1px solid var(--aviso)}
+  .resultado .icone{font-size:32px;display:block;margin-bottom:6px}
+  .resultado .titulo{font-size:15px;font-weight:700;margin-bottom:6px}
+  .resultado .texto{font-size:13px;line-height:1.5}
 
-  .resultado.sucesso {
-    background: var(--verde-light);
-    color: var(--verde);
-    border: 1.5px solid #b7dfc9;
-  }
+  /* Aviso sem aulas */
+  .sem-aulas{text-align:center;padding:30px 16px;color:var(--texto-leve)}
+  .sem-aulas .icone{font-size:38px;display:block;margin-bottom:12px}
+  .sem-aulas .titulo{font-size:16px;font-weight:600;color:var(--texto);margin-bottom:6px}
+  .sem-aulas .desc{font-size:13px;line-height:1.5}
 
-  .resultado.erro {
-    background: var(--erro-bg);
-    color: var(--erro);
-    border: 1.5px solid #f5c6c6;
-  }
+  /* Spinner */
+  .spinner{display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:girar 0.7s linear infinite;margin-right:8px;vertical-align:middle}
+  @keyframes girar{to{transform:rotate(360deg)}}
 
-  .resultado .res-icone { font-size: 28px; display: block; margin-bottom: 8px; }
-
-  .spinner {
-    display: inline-block;
-    width: 18px; height: 18px;
-    border: 3px solid rgba(255,255,255,0.4);
-    border-top-color: #fff;
-    border-radius: 50%;
-    animation: spin 0.7s linear infinite;
-    vertical-align: middle;
-    margin-right: 8px;
-  }
-
-  @keyframes spin { to { transform: rotate(360deg); } }
-
-  /* Rodapé */
-  .rodape {
-    margin-top: 28px;
-    font-size: 11px;
-    color: var(--texto-leve);
-    text-align: center;
-    line-height: 2;
-    z-index: 1;
-    position: relative;
-  }
-
-  .rodape .assinatura {
-    font-family: 'Playfair Display', serif;
-    font-size: 12px;
-    color: var(--ouro);
-    letter-spacing: 0.04em;
-  }
-
-  /* Select arrow customizado */
-  .select-wrap { position: relative; }
-  .select-wrap::after {
-    content: '▾';
-    position: absolute;
-    right: 14px; top: 50%;
-    transform: translateY(-50%);
-    color: var(--texto-leve);
-    pointer-events: none;
-    font-size: 14px;
-  }
+  .footer{text-align:center;font-size:11px;color:var(--texto-leve);padding:20px;letter-spacing:0.5px}
 </style>
 </head>
 <body>
@@ -497,56 +156,53 @@
       <button id="btn-sair" onclick="sair()">Sair</button>
     </div>
 
-    <p class="secao-titulo">Dados da Matrícula</p>
+    <!-- Bloco mostrado se houver aulas hoje -->
+    <div id="bloco-com-aulas">
+      <p class="secao-titulo">Dados da Matrícula</p>
 
-    <form id="form" autocomplete="off" novalidate>
+      <form id="form" autocomplete="off" novalidate>
 
-      <label for="ra">RA — Registro Acadêmico <span class="obrig">*</span></label>
-      <input type="text" id="ra" placeholder="Ex: 4196579" inputmode="numeric">
-      <span class="campo-erro" id="erro-ra"></span>
+        <label for="ra">RA — Registro Acadêmico <span class="obrig">*</span></label>
+        <input type="text" id="ra" placeholder="Ex: 4196579" inputmode="numeric">
+        <span class="campo-erro" id="erro-ra"></span>
 
-      <label for="nome">Nome completo <span class="obrig">*</span></label>
-      <input type="text" id="nome" placeholder="Como consta na matrícula">
-      <span class="campo-erro" id="erro-nome"></span>
+        <label for="nome">Nome completo <span class="obrig">*</span></label>
+        <input type="text" id="nome" placeholder="Como consta na matrícula">
+        <span class="campo-erro" id="erro-nome"></span>
 
-      <label for="turma">Turma / Disciplina <span class="obrig">*</span></label>
-      <div class="select-wrap">
-        <select id="turma">
-          <option value="">— Selecione sua turma —</option>
-          <optgroup label="Matemática Financeira">
-            <option value="matfin_adm1">ADM — 1º Semestre</option>
-            <option value="matfin_adm3">ADM — 3º Semestre</option>
-            <option value="matfin_cc2">Ciências Contábeis — 2º Semestre</option>
-            <option value="matfin_cc3">Ciências Contábeis — 3º Semestre</option>
-          </optgroup>
-          <optgroup label="Redes de Computadores">
-            <option value="redes_tads1">TADS — 1º Semestre</option>
-            <option value="redes_tads3">TADS — 3º Semestre</option>
-          </optgroup>
-          <optgroup label="Modelagem de Dados">
-            <option value="modelagem_tads1">TADS — 1º Semestre</option>
-          </optgroup>
-          <optgroup label="Lógica e Matemática Computacional">
-            <option value="logica_tads2">TADS — 2º Semestre</option>
-          </optgroup>
-        </select>
+        <label for="turma">Turma / Disciplina <span class="obrig">*</span></label>
+        <div class="select-wrap">
+          <select id="turma">
+            <!-- Preenchido dinamicamente conforme o dia -->
+          </select>
+        </div>
+        <span class="campo-erro" id="erro-turma"></span>
+
+        <label>Localização <span class="obrig">*</span></label>
+        <div class="geo-status obtendo" id="geo-status">
+          <div class="dot"></div>
+          <span id="geo-texto">Obtendo localização...</span>
+        </div>
+        <span class="campo-erro" id="erro-geo"></span>
+
+        <div class="btn-grupo" style="margin-top:16px;">
+          <button type="submit" class="btn btn-primario" id="btn-continuar" disabled>
+            Continuar →
+          </button>
+        </div>
+
+      </form>
+    </div>
+
+    <!-- Bloco mostrado se NÃO houver aulas hoje -->
+    <div id="bloco-sem-aulas" style="display:none">
+      <div class="sem-aulas">
+        <span class="icone">📅</span>
+        <div class="titulo">Sem aulas hoje</div>
+        <div class="desc">Não há disciplinas configuradas para o dia de hoje.<br>A chamada digital só está disponível em dias letivos.</div>
       </div>
-      <span class="campo-erro" id="erro-turma"></span>
+    </div>
 
-      <label>Localização <span class="obrig">*</span></label>
-      <div class="geo-status obtendo" id="geo-status">
-        <div class="dot"></div>
-        <span id="geo-texto">Obtendo localização...</span>
-      </div>
-      <span class="campo-erro" id="erro-geo"></span>
-
-      <div class="btn-grupo" style="margin-top:16px;">
-        <button type="submit" class="btn btn-primario" id="btn-continuar" disabled>
-          Continuar →
-        </button>
-      </div>
-
-    </form>
   </div>
 
   <!-- TELA 3: Confirmação -->
@@ -583,184 +239,266 @@
     </div>
 
     <div class="btn-grupo">
-      <button class="btn btn-secundario" onclick="voltarForm()">← Corrigir</button>
-      <button class="btn btn-primario" id="btn-enviar" onclick="enviar()">
-        ✓ Confirmar presença
-      </button>
+      <button class="btn btn-secundario" onclick="voltarFormulario()">← Corrigir</button>
+      <button class="btn btn-primario" id="btn-enviar" onclick="enviar()">✓ Confirmar presença</button>
     </div>
 
-    <div class="resultado" id="resultado">
-      <span class="res-icone" id="res-icone"></span>
-      <span id="res-texto"></span>
+    <div id="resultado" class="resultado">
+      <span class="icone" id="res-icone"></span>
+      <div class="titulo" id="res-titulo"></div>
+      <div class="texto" id="res-texto"></div>
     </div>
 
   </div>
 
 </div>
 
-<div class="rodape">
-  Localização usada apenas para validar presença no campus.<br>
-  <span class="assinatura">by Roberto Maia</span>
-</div>
+<div class="footer">© Anhanguera Itaquera — Sistema de Chamada Digital</div>
 
 <script>
-const API_URL = 'https://script.google.com/macros/s/AKfycbwAofMUf1dZVA4Z7bleLvvGatCKAbCOVVRknDbem4nCBm8oyQ8_VtvnxWgsT0CI4ANryQ/exec';
+// ============================================================
+// CONFIGURAÇÃO
+// ============================================================
+const API_URL = 'https://script.google.com/macros/s/AKfycbz_SUBSTITUIR_PELO_SEU_DEPLOY_ID/exec';
 
-const TURMAS = {
-  'matfin_adm1':    { disciplina: 'Matemática Financeira', turma: 'Administração — 1º Semestre' },
-  'matfin_adm3':    { disciplina: 'Matemática Financeira', turma: 'Administração — 3º Semestre' },
-  'matfin_cc2':     { disciplina: 'Matemática Financeira', turma: 'Ciências Contábeis — 2º Semestre' },
-  'matfin_cc3':     { disciplina: 'Matemática Financeira', turma: 'Ciências Contábeis — 3º Semestre' },
-  'redes_tads1':    { disciplina: 'Redes de Computadores', turma: 'TADS — 1º Semestre' },
-  'redes_tads3':    { disciplina: 'Redes de Computadores', turma: 'TADS — 3º Semestre' },
-  'modelagem_tads1':{ disciplina: 'Modelagem de Dados',   turma: 'TADS — 1º Semestre' },
-  'logica_tads2':   { disciplina: 'Lógica e Matemática Computacional', turma: 'TADS — 2º Semestre' },
+// Mapeamento dia da semana → disciplinas e turmas disponíveis
+// Dias: 0=domingo, 1=segunda, 2=terça, 3=quarta, 4=quinta, 5=sexta, 6=sábado
+const AULAS_POR_DIA = {
+  1: { // segunda-feira
+    disciplina: 'Modelagem de Dados',
+    turmas: [
+      { value: 'modelagem_tads1', label: 'TADS — 1º Semestre' }
+    ]
+  },
+  2: { // terça-feira
+    disciplina: 'Redes de Computadores',
+    turmas: [
+      { value: 'redes_tads1', label: 'TADS — 1º Semestre' },
+      { value: 'redes_tads3', label: 'TADS — 3º Semestre' }
+    ]
+  },
+  3: { // quarta-feira
+    disciplina: 'Lógica e Matemática Computacional',
+    turmas: [
+      { value: 'logica_tads2', label: 'TADS — 2º Semestre' }
+    ]
+  },
+  4: { // quinta-feira
+    disciplina: 'Matemática Financeira',
+    turmas: [
+      { value: 'matfin_adm1', label: 'ADM — 1º Semestre' },
+      { value: 'matfin_adm3', label: 'ADM — 3º Semestre' },
+      { value: 'matfin_cc2',  label: 'Ciências Contábeis — 2º Semestre' },
+      { value: 'matfin_cc3',  label: 'Ciências Contábeis — 3º Semestre' }
+    ]
+  }
 };
 
-let coords     = null;
-let geoOk      = false;
-let dadosGoogle = null;
-let dadosEnvio  = null;
+// ============================================================
+// ESTADO
+// ============================================================
+let geoOk = false;
+let usuarioGoogle = null;
+let dadosEnvio = null;
+let aulasHoje = null;
 
-// ── Google OAuth ──────────────────────────────────────────
-function onGoogleLogin(response) {
-  try {
-    const payload = parseJwt(response.credential);
-    dadosGoogle = { email: payload.email, nome: payload.name, foto: payload.picture };
-    document.getElementById('nome-google-display').textContent = payload.name;
-    document.getElementById('email-google-display').textContent = payload.email;
-    document.getElementById('foto-google').src = payload.picture;
-    document.getElementById('usuario-logado').style.display = 'flex';
-    document.getElementById('tela-login').style.display = 'none';
-    document.getElementById('tela-form').style.display = 'block';
-    tentarGeo();
-  } catch(e) {
-    mostrarErroLogin('Erro ao processar login. Tente novamente.');
+// ============================================================
+// INICIALIZAÇÃO
+// ============================================================
+document.addEventListener('DOMContentLoaded', () => {
+  configurarSelect();
+
+  // Listener do form (só se a aba existir)
+  const form = document.getElementById('form');
+  if (form) {
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      avancarParaConfirmacao();
+    });
+  }
+
+  // Limpa erros ao digitar
+  ['ra','nome','turma'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener('input', () => {
+      const erro = document.getElementById('erro-' + id);
+      if (erro) erro.textContent = '';
+      el.classList.remove('invalido');
+    });
+  });
+});
+
+// Monta o select com base no dia da semana
+function configurarSelect(){
+  const hoje = new Date().getDay();
+  aulasHoje = AULAS_POR_DIA[hoje] || null;
+
+  if (!aulasHoje) return; // sem aulas — bloco será mostrado após login
+
+  const sel = document.getElementById('turma');
+  sel.innerHTML = '<option value="">— Selecione sua turma —</option>';
+
+  // Se há só uma turma, já pré-seleciona
+  if (aulasHoje.turmas.length === 1) {
+    const t = aulasHoje.turmas[0];
+    sel.innerHTML = `<option value="${t.value}" selected>${t.label}</option>`;
+  } else {
+    aulasHoje.turmas.forEach(t => {
+      const opt = document.createElement('option');
+      opt.value = t.value;
+      opt.textContent = t.label;
+      sel.appendChild(opt);
+    });
   }
 }
 
-function parseJwt(token) {
-  const base64 = token.split('.')[1].replace(/-/g,'+').replace(/_/g,'/');
-  return JSON.parse(decodeURIComponent(atob(base64).split('').map(c =>
-    '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
-  ).join('')));
-}
+// ============================================================
+// LOGIN GOOGLE
+// ============================================================
+function onGoogleLogin(response) {
+  try {
+    const payload = JSON.parse(atob(response.credential.split('.')[1]));
+    usuarioGoogle = {
+      email: payload.email,
+      nome:  payload.name,
+      foto:  payload.picture
+    };
 
-function mostrarErroLogin(msg) {
-  const el = document.getElementById('login-erro');
-  el.textContent = msg; el.style.display = 'block';
+    document.getElementById('foto-google').src = usuarioGoogle.foto;
+    document.getElementById('nome-google-display').textContent = usuarioGoogle.nome;
+    document.getElementById('email-google-display').textContent = usuarioGoogle.email;
+
+    document.getElementById('tela-login').style.display = 'none';
+    document.getElementById('tela-form').style.display = 'block';
+
+    if (aulasHoje) {
+      document.getElementById('bloco-com-aulas').style.display = 'block';
+      document.getElementById('bloco-sem-aulas').style.display = 'none';
+      obterLocalizacao();
+    } else {
+      document.getElementById('bloco-com-aulas').style.display = 'none';
+      document.getElementById('bloco-sem-aulas').style.display = 'block';
+    }
+  } catch(err) {
+    document.getElementById('login-erro').textContent = 'Falha no login. Tente novamente.';
+  }
 }
 
 function sair() {
-  dadosGoogle = null; coords = null; geoOk = false;
-  document.getElementById('tela-login').style.display = 'block';
-  document.getElementById('tela-form').style.display  = 'none';
+  usuarioGoogle = null;
+  document.getElementById('tela-form').style.display = 'none';
   document.getElementById('tela-confirmacao').style.display = 'none';
-  document.getElementById('usuario-logado').style.display = 'none';
-  document.getElementById('form').reset();
-  document.getElementById('resultado').style.display = 'none';
-  limparErros();
+  document.getElementById('tela-login').style.display = 'block';
+  if (typeof google !== 'undefined' && google.accounts && google.accounts.id) {
+    google.accounts.id.disableAutoSelect();
+  }
 }
 
-// ── Geolocalização ────────────────────────────────────────
-function setGeo(estado, texto) {
-  const gs = document.getElementById('geo-status');
-  gs.className = 'geo-status ' + estado;
-  document.getElementById('geo-texto').textContent = texto;
-  geoOk = estado === 'ok';
-  document.getElementById('btn-continuar').disabled = !geoOk;
-}
+// ============================================================
+// GEOLOCALIZAÇÃO
+// ============================================================
+function obterLocalizacao() {
+  const status = document.getElementById('geo-status');
+  const texto  = document.getElementById('geo-texto');
 
-function tentarGeo() {
-  if (!navigator.geolocation) { setGeo('erro', 'Geolocalização não suportada.'); return; }
-  setGeo('obtendo', 'Obtendo localização...');
+  if (!navigator.geolocation) {
+    status.className = 'geo-status erro';
+    texto.textContent = 'Navegador não suporta localização.';
+    return;
+  }
+
   navigator.geolocation.getCurrentPosition(
     pos => {
-      coords = { latitude: pos.coords.latitude, longitude: pos.coords.longitude };
-      setGeo('ok', '📍 Localização verificada com sucesso');
+      window._lat = pos.coords.latitude;
+      window._lng = pos.coords.longitude;
+      geoOk = true;
+      status.className = 'geo-status ok';
+      texto.textContent = 'Localização obtida ✓';
+      atualizarBotaoContinuar();
     },
     err => {
-      const msgs = { 1:'Permissão negada — permita a localização e recarregue.', 2:'Não foi possível obter localização.', 3:'Tempo esgotado — tente novamente.' };
-      setGeo('erro', msgs[err.code] || 'Erro ao obter localização.');
+      status.className = 'geo-status erro';
+      texto.textContent = 'Permita o acesso à localização e recarregue a página.';
+      geoOk = false;
     },
     { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
   );
 }
 
-// ── Validação ─────────────────────────────────────────────
-function limparErros() {
-  ['ra','nome','turma','geo'].forEach(f => {
-    const e = document.getElementById('erro-' + f);
-    if (e) e.textContent = '';
-    const i = document.getElementById(f);
-    if (i) i.classList.remove('invalido');
-  });
+// ============================================================
+// VALIDAÇÃO + CONFIRMAÇÃO
+// ============================================================
+function atualizarBotaoContinuar() {
+  document.getElementById('btn-continuar').disabled = !geoOk;
 }
 
-function validar() {
-  limparErros();
+function validarCampos(){
   let ok = true;
 
-  const ra = document.getElementById('ra').value.trim();
-  if (!ra) {
-    document.getElementById('erro-ra').textContent = 'O RA é obrigatório.';
-    document.getElementById('ra').classList.add('invalido'); ok = false;
-  } else if (!/^\d{6,11}$/.test(ra.replace(/\D/g,''))) {
-    document.getElementById('erro-ra').textContent = 'RA inválido — apenas números.';
-    document.getElementById('ra').classList.add('invalido'); ok = false;
-  }
-
-  const nome = document.getElementById('nome').value.trim();
-  if (!nome) {
-    document.getElementById('erro-nome').textContent = 'O nome completo é obrigatório.';
-    document.getElementById('nome').classList.add('invalido'); ok = false;
-  } else if (nome.split(' ').filter(Boolean).length < 2) {
-    document.getElementById('erro-nome').textContent = 'Informe nome e sobrenome.';
-    document.getElementById('nome').classList.add('invalido'); ok = false;
-  }
-
+  const ra    = document.getElementById('ra').value.trim();
+  const nome  = document.getElementById('nome').value.trim();
   const turma = document.getElementById('turma').value;
-  if (!turma) {
-    document.getElementById('erro-turma').textContent = 'Selecione a turma.';
-    document.getElementById('turma').classList.add('invalido'); ok = false;
+
+  if (!/^\d{6,8}$/.test(ra)) {
+    document.getElementById('erro-ra').textContent = 'RA deve ter entre 6 e 8 dígitos numéricos.';
+    document.getElementById('ra').classList.add('invalido');
+    ok = false;
   }
 
-  if (!geoOk || !coords) {
-    document.getElementById('erro-geo').textContent = 'Localização ainda não obtida.';
+  if (nome.split(/\s+/).filter(Boolean).length < 2) {
+    document.getElementById('erro-nome').textContent = 'Digite o nome completo (mínimo 2 palavras).';
+    document.getElementById('nome').classList.add('invalido');
+    ok = false;
+  }
+
+  if (!turma) {
+    document.getElementById('erro-turma').textContent = 'Selecione sua turma.';
+    document.getElementById('turma').classList.add('invalido');
+    ok = false;
+  }
+
+  if (!geoOk) {
+    document.getElementById('erro-geo').textContent = 'Localização obrigatória.';
     ok = false;
   }
 
   return ok;
 }
 
-// ── Tela de confirmação ───────────────────────────────────
-document.getElementById('form').addEventListener('submit', function(e) {
-  e.preventDefault();
-  if (!validar()) return;
+function avancarParaConfirmacao(){
+  if (!validarCampos()) return;
 
-  const ra    = document.getElementById('ra').value.trim();
-  const nome  = document.getElementById('nome').value.trim();
-  const turma = document.getElementById('turma').value;
-  const info  = TURMAS[turma];
+  const sel  = document.getElementById('turma');
+  const opt  = sel.options[sel.selectedIndex];
 
-  dadosEnvio = { ra, nome, turma, latitude: coords.latitude, longitude: coords.longitude, email: dadosGoogle.email, nomeGoogle: dadosGoogle.nome };
+  dadosEnvio = {
+    ra:        document.getElementById('ra').value.trim(),
+    nome:      document.getElementById('nome').value.trim(),
+    turma:     sel.value,
+    latitude:  window._lat,
+    longitude: window._lng,
+    email:     usuarioGoogle.email,
+    nomeGoogle:usuarioGoogle.nome
+  };
 
-  document.getElementById('conf-nome').textContent       = nome;
-  document.getElementById('conf-ra').textContent         = ra.replace(/\D/g,'').substring(0,7);
-  document.getElementById('conf-disciplina').textContent = info.disciplina;
-  document.getElementById('conf-turma').textContent      = info.turma;
+  document.getElementById('conf-nome').textContent       = dadosEnvio.nome;
+  document.getElementById('conf-ra').textContent         = dadosEnvio.ra;
+  document.getElementById('conf-disciplina').textContent = aulasHoje.disciplina;
+  document.getElementById('conf-turma').textContent      = opt.textContent;
 
-  document.getElementById('tela-form').style.display         = 'none';
-  document.getElementById('tela-confirmacao').style.display  = 'block';
-  document.getElementById('resultado').style.display         = 'none';
-});
-
-function voltarForm() {
-  document.getElementById('tela-confirmacao').style.display = 'none';
-  document.getElementById('tela-form').style.display        = 'block';
+  document.getElementById('tela-form').style.display = 'none';
+  document.getElementById('tela-confirmacao').style.display = 'block';
 }
 
-// ── Envio ─────────────────────────────────────────────────
+function voltarFormulario(){
+  document.getElementById('tela-confirmacao').style.display = 'none';
+  document.getElementById('tela-form').style.display = 'block';
+  document.getElementById('resultado').style.display = 'none';
+}
+
+// ============================================================
+// ENVIO
+// ============================================================
 async function enviar() {
   const btn = document.getElementById('btn-enviar');
   btn.disabled = true;
@@ -778,13 +516,24 @@ async function enviar() {
     if (json.ok) {
       res.className = 'resultado sucesso';
       document.getElementById('res-icone').textContent = '✅';
-      document.getElementById('res-texto').textContent = json.mensagem;
+      document.getElementById('res-titulo').textContent = 'Presença registrada!';
+      document.getElementById('res-texto').textContent  = json.mensagem || 'Sua chamada foi confirmada.';
+      btn.style.display = 'none';
+      document.querySelector('.btn-secundario').style.display = 'none';
+    } else if (json.tipo === 'turma_errada') {
+      // Aluno já registrou hoje em OUTRA turma — bloqueio crítico
+      res.className = 'resultado aviso';
+      document.getElementById('res-icone').textContent = '⚠️';
+      document.getElementById('res-titulo').textContent = 'Registro bloqueado';
+      document.getElementById('res-texto').innerHTML =
+        json.erro + '<br><br><strong>Procure o professor presencialmente</strong> para corrigir o registro. Não tente registrar novamente.';
       btn.style.display = 'none';
       document.querySelector('.btn-secundario').style.display = 'none';
     } else {
       res.className = 'resultado erro';
       document.getElementById('res-icone').textContent = '❌';
-      document.getElementById('res-texto').textContent = json.erro;
+      document.getElementById('res-titulo').textContent = 'Não foi possível registrar';
+      document.getElementById('res-texto').textContent  = json.erro || 'Erro desconhecido.';
       btn.disabled = false;
       btn.innerHTML = '✓ Confirmar presença';
     }
@@ -793,20 +542,12 @@ async function enviar() {
     res.style.display = 'block';
     res.className = 'resultado erro';
     document.getElementById('res-icone').textContent = '❌';
-    document.getElementById('res-texto').textContent = 'Falha na conexão. Verifique o sinal e tente novamente.';
+    document.getElementById('res-titulo').textContent = 'Falha na conexão';
+    document.getElementById('res-texto').textContent  = 'Verifique o sinal e tente novamente.';
     btn.disabled = false;
     btn.innerHTML = '✓ Confirmar presença';
   }
 }
-
-// Limpa erros ao digitar
-['ra','nome','turma'].forEach(id => {
-  const el = document.getElementById(id);
-  if (el) el.addEventListener('input', () => {
-    document.getElementById('erro-' + id).textContent = '';
-    el.classList.remove('invalido');
-  });
-});
 </script>
 </body>
 </html>
