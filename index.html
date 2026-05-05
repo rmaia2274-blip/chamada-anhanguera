@@ -58,7 +58,6 @@
 
   .header-icone { font-size: 32px; margin-bottom: 8px; display: block; animation: float 3s ease-in-out infinite; }
   @keyframes float { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-4px);} }
-
   .header h1 { font-family: 'Playfair Display', serif; font-size: 22px; color: #fff; margin-bottom: 4px; }
   .header p  { font-size: 12px; color: rgba(255,255,255,0.65); letter-spacing: 0.08em; text-transform: uppercase; }
   .header .linha-ouro { width: 40px; height: 2px; background: var(--ouro); margin: 12px auto 0; border-radius: 2px; }
@@ -78,45 +77,37 @@
   @keyframes slideUp { from{opacity:0;transform:translateY(20px);} to{opacity:1;transform:translateY(0);} }
   @keyframes fadeIn  { from{opacity:0;} to{opacity:1;} }
 
-  /* Login */
   #tela-login { text-align: center; }
   .login-titulo { font-family: 'Playfair Display', serif; font-size: 20px; color: var(--texto); margin-bottom: 8px; }
   .login-sub { font-size: 13px; color: var(--texto-leve); line-height: 1.6; margin-bottom: 28px; }
   #google-btn-wrap { display: flex; justify-content: center; margin-bottom: 16px; }
   #login-erro { font-size: 13px; color: var(--erro); background: var(--erro-bg); border: 1px solid #f5c6c6; border-radius: 8px; padding: 10px 14px; display: none; margin-top: 12px; }
 
-  /* Usuário */
-  #usuario-logado {
-    display: none; align-items: center; gap: 12px;
+  .usuario-bar {
+    display: flex; align-items: center; gap: 12px;
     background: var(--verde-light); border: 1.5px solid #b7dfc9;
-    border-radius: 10px; padding: 12px 14px; margin-bottom: 24px;
+    border-radius: 10px; padding: 10px 14px; margin-bottom: 20px;
     animation: fadeIn 0.3s ease;
   }
-  #usuario-logado img { width: 36px; height: 36px; border-radius: 50%; border: 2px solid var(--verde-med); }
-  #usuario-logado .info { flex: 1; min-width: 0; }
-  #usuario-logado .ng { font-size: 13px; font-weight: 600; color: var(--verde); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  #usuario-logado .eg { font-size: 11px; color: #4a7c59; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  #btn-sair { font-size: 11px; color: #4a7c59; background: none; border: none; cursor: pointer; text-decoration: underline; white-space: nowrap; }
+  .usuario-bar img { width: 32px; height: 32px; border-radius: 50%; border: 2px solid var(--verde-med); flex-shrink:0; }
+  .usuario-bar .info { flex: 1; min-width: 0; }
+  .usuario-bar .ng { font-size: 13px; font-weight: 600; color: var(--verde); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .usuario-bar .eg { font-size: 11px; color: #4a7c59; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .btn-sair { font-size: 11px; color: #4a7c59; background: none; border: none; cursor: pointer; text-decoration: underline; white-space: nowrap; }
 
-  /* Admin */
   #tela-admin { display: none; animation: slideUp 0.35s cubic-bezier(0.16,1,0.3,1); }
-
   .admin-titulo { font-family: 'Playfair Display', serif; font-size: 17px; color: var(--texto); margin-bottom: 4px; }
   .admin-sub { font-size: 12px; color: var(--texto-leve); margin-bottom: 20px; }
-
-  .data-atual-wrap {
-    background: var(--verde-light); border: 1.5px solid #b7dfc9;
-    border-radius: 10px; padding: 14px 16px; margin-bottom: 20px; text-align: center;
-  }
+  .data-atual-wrap { background: var(--verde-light); border: 1.5px solid #b7dfc9; border-radius: 10px; padding: 14px 16px; margin-bottom: 20px; text-align: center; }
   .data-atual-label { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--verde-med); margin-bottom: 6px; }
   .data-atual-valor { font-family: 'Playfair Display', serif; font-size: 22px; color: var(--verde); font-weight: 700; }
   .data-atual-valor.vazia { font-family: 'DM Sans', sans-serif; font-size: 14px; color: var(--texto-leve); font-style: italic; font-weight: 400; }
 
-  /* Formulário aluno */
   #tela-form { display: none; }
   #tela-confirmacao { display: none; animation: slideUp 0.35s cubic-bezier(0.16,1,0.3,1); }
 
   .secao-titulo { font-family: 'Playfair Display', serif; font-size: 16px; color: var(--texto); margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px solid var(--borda); }
+  .aula-badge { display:inline-flex; align-items:center; gap:6px; background: var(--verde-light); border: 1px solid #b7dfc9; border-radius:6px; padding:5px 10px; font-size:12px; font-weight:600; color:var(--verde); margin-bottom:20px; }
 
   label { display: block; font-size: 11px; font-weight: 600; color: var(--texto-med); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 6px; }
   label .obrig { color: var(--ouro); margin-left: 2px; }
@@ -132,8 +123,23 @@
   input:focus, select:focus { border-color: var(--verde-med); background: var(--branco); box-shadow: 0 0 0 3px var(--verde-glow); }
   input::placeholder { color: #c0c8d4; }
   input.invalido, select.invalido { border-color: var(--erro); background: var(--erro-bg); }
-
   .campo-erro { font-size: 11px; color: var(--erro); margin-bottom: 14px; min-height: 16px; display: block; }
+
+  /* Seleção de turma como cards */
+  .turma-grid { display: flex; flex-direction: column; gap: 8px; margin-bottom: 4px; }
+  .turma-card {
+    border: 1.5px solid var(--borda); border-radius: 10px;
+    padding: 13px 16px; cursor: pointer; transition: all 0.15s;
+    background: #fafbfc; display: flex; align-items: center; gap: 12px;
+  }
+  .turma-card:hover { border-color: var(--verde-med); background: var(--verde-light); }
+  .turma-card.selecionado { border-color: var(--verde); background: var(--verde-light); box-shadow: 0 0 0 3px var(--verde-glow); }
+  .turma-card .tc-radio { width: 18px; height: 18px; border: 2px solid var(--borda); border-radius: 50%; flex-shrink: 0; transition: all 0.15s; display:flex; align-items:center; justify-content:center; }
+  .turma-card.selecionado .tc-radio { border-color: var(--verde); background: var(--verde); }
+  .turma-card.selecionado .tc-radio::after { content:''; width:6px; height:6px; border-radius:50%; background:#fff; }
+  .turma-card .tc-info { flex: 1; }
+  .turma-card .tc-disc { font-size: 13px; font-weight: 600; color: var(--texto); }
+  .turma-card .tc-turma { font-size: 11px; color: var(--texto-leve); margin-top: 2px; }
 
   .geo-status {
     display: flex; align-items: center; gap: 12px;
@@ -149,7 +155,6 @@
   .geo-status.erro .dot    { background: var(--erro); }
   @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.3;} }
 
-  /* Confirmação */
   .confirmacao-card { background: var(--verde-light); border: 1.5px solid #b7dfc9; border-radius: 12px; padding: 20px; margin-bottom: 20px; text-align: center; }
   .confirmacao-icone { font-size: 36px; margin-bottom: 12px; display: block; }
   .confirmacao-label { font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--verde-med); margin-bottom: 16px; }
@@ -158,7 +163,6 @@
   .confirmacao-info .ci-valor { font-size: 15px; font-weight: 600; color: var(--texto); }
   .confirmacao-info .ci-valor.destaque { font-family: 'Playfair Display', serif; color: var(--verde); }
 
-  /* Botões */
   .btn-grupo { display: flex; gap: 10px; margin-top: 8px; }
   .btn { flex: 1; padding: 14px; border: none; border-radius: 10px; font-size: 15px; font-family: 'DM Sans', sans-serif; font-weight: 600; cursor: pointer; transition: transform 0.1s, opacity 0.2s; }
   .btn:active { transform: scale(0.97); }
@@ -167,7 +171,6 @@
   .btn-primario:hover:not(:disabled) { background: var(--verde-med); }
   .btn-secundario { background: #f0f2f5; color: var(--texto-med); }
 
-  /* Resultado */
   .resultado { display: none; margin-top: 20px; padding: 18px; border-radius: 12px; font-size: 14px; font-weight: 500; text-align: center; line-height: 1.6; animation: fadeIn 0.3s ease; }
   .resultado.sucesso { background: var(--verde-light); color: var(--verde); border: 1.5px solid #b7dfc9; }
   .resultado.erro    { background: var(--erro-bg); color: var(--erro); border: 1.5px solid #f5c6c6; }
@@ -176,13 +179,13 @@
   .spinner { display: inline-block; width: 18px; height: 18px; border: 3px solid rgba(255,255,255,0.4); border-top-color: #fff; border-radius: 50%; animation: spin 0.7s linear infinite; vertical-align: middle; margin-right: 8px; }
   @keyframes spin { to{transform:rotate(360deg);} }
 
-  .select-wrap { position: relative; }
-  .select-wrap::after { content: '▾'; position: absolute; right: 14px; top: 50%; transform: translateY(-50%); color: var(--texto-leve); pointer-events: none; font-size: 14px; }
-
+  .divider { height: 1px; background: var(--borda); margin: 16px 0; }
   .rodape { margin-top: 28px; font-size: 11px; color: var(--texto-leve); text-align: center; line-height: 2; }
   .rodape .assinatura { font-family: 'Playfair Display', serif; font-size: 12px; color: var(--ouro); }
 
-  .divider { height: 1px; background: var(--borda); margin: 16px 0; }
+  .sem-aula { text-align:center; padding:20px 0; }
+  .sem-aula .sa-icone { font-size:40px; margin-bottom:12px; }
+  .sem-aula p { font-size:14px; color:var(--texto-leve); line-height:1.6; }
 </style>
 </head>
 <body>
@@ -196,7 +199,7 @@
 
 <div class="card">
 
-  <!-- TELA 1: Login -->
+  <!-- Login -->
   <div id="tela-login">
     <p class="login-titulo">Registrar Presença</p>
     <p class="login-sub">Faça login com sua conta Google para confirmar sua presença na aula de hoje.</p>
@@ -215,132 +218,91 @@
     <div id="login-erro"></div>
   </div>
 
-  <!-- TELA 2A: Admin -->
+  <!-- Admin -->
   <div id="tela-admin">
-    <div id="usuario-logado" style="display:flex;">
-      <img id="foto-google-adm" src="" alt="">
-      <div class="info">
-        <div class="ng" id="nome-google-adm"></div>
-        <div class="eg" id="email-google-adm"></div>
-      </div>
-      <button id="btn-sair-adm" onclick="sair()">Sair</button>
+    <div class="usuario-bar" id="ubar-admin">
+      <img id="foto-adm" src="" alt="">
+      <div class="info"><div class="ng" id="nome-adm"></div><div class="eg" id="email-adm"></div></div>
+      <button class="btn-sair" onclick="sair()">Sair</button>
     </div>
-
     <p class="admin-titulo">Painel do Professor</p>
     <p class="admin-sub">Defina a data da aula antes de abrir a chamada para os alunos.</p>
-
     <div class="data-atual-wrap">
       <div class="data-atual-label">Data da aula vigente</div>
       <div class="data-atual-valor" id="data-atual-display">Carregando...</div>
     </div>
-
     <label for="nova-data">Definir nova data da aula</label>
     <input type="date" id="nova-data">
     <span class="campo-erro" id="erro-data-adm"></span>
-
     <div class="btn-grupo" style="margin-top:4px;">
       <button class="btn btn-primario" onclick="definirData()">Salvar data da aula</button>
     </div>
-
     <div class="resultado" id="resultado-adm">
       <span class="res-icone" id="res-icone-adm"></span>
       <span id="res-texto-adm"></span>
     </div>
   </div>
 
-  <!-- TELA 2B: Formulário aluno -->
+  <!-- Formulário aluno -->
   <div id="tela-form">
-    <div id="usuario-logado-aluno">
-      <img id="foto-google" src="" alt="" style="width:36px;height:36px;border-radius:50%;border:2px solid var(--verde-med);vertical-align:middle;margin-right:10px;">
-      <span id="nome-google-display" style="font-size:13px;font-weight:600;color:var(--verde);"></span>
-      <button onclick="sair()" style="margin-left:auto;font-size:11px;color:#4a7c59;background:none;border:none;cursor:pointer;text-decoration:underline;">Sair</button>
-    </div>
-    <div style="display:flex;align-items:center;gap:8px;margin-bottom:20px;margin-top:12px;">
-      <span style="font-size:12px;color:var(--texto-leve);">Aula do dia:</span>
-      <span id="data-aula-display" style="font-size:13px;font-weight:600;color:var(--verde);font-family:'Playfair Display',serif;"></span>
+    <div class="usuario-bar" id="ubar-aluno">
+      <img id="foto-aluno" src="" alt="">
+      <div class="info"><div class="ng" id="nome-aluno"></div><div class="eg" id="email-aluno"></div></div>
+      <button class="btn-sair" onclick="sair()">Sair</button>
     </div>
 
-    <div class="divider"></div>
-    <p class="secao-titulo">Dados da Matrícula</p>
+    <div id="sem-aula-hoje" class="sem-aula" style="display:none;">
+      <div class="sa-icone">📅</div>
+      <p>Não há aulas cadastradas para hoje.<br>Se houver erro, entre em contato com o professor.</p>
+    </div>
 
-    <form id="form" autocomplete="off" novalidate>
-      <label for="ra">RA — Registro Acadêmico <span class="obrig">*</span></label>
-      <input type="text" id="ra" placeholder="Ex: 41965796644" inputmode="numeric">
-      <span class="campo-erro" id="erro-ra"></span>
+    <div id="form-wrap">
+      <div class="aula-badge" id="aula-badge">📅 <span id="data-aula-display"></span></div>
+      <div class="divider"></div>
+      <p class="secao-titulo">Dados da Matrícula</p>
 
-      <label for="nome">Nome completo <span class="obrig">*</span></label>
-      <input type="text" id="nome" placeholder="Como consta na matrícula">
-      <span class="campo-erro" id="erro-nome"></span>
+      <form id="form" autocomplete="off" novalidate>
+        <label for="ra">RA — Registro Acadêmico <span class="obrig">*</span></label>
+        <input type="text" id="ra" placeholder="Ex: 41965796644" inputmode="numeric">
+        <span class="campo-erro" id="erro-ra"></span>
 
-      <label for="turma">Turma / Disciplina <span class="obrig">*</span></label>
-      <div class="select-wrap">
-        <select id="turma">
-          <option value="">— Selecione sua turma —</option>
-          <optgroup label="Matemática Financeira">
-            <option value="matfin_adm1">ADM — 1º Semestre</option>
-            <option value="matfin_adm3">ADM — 3º Semestre</option>
-            <option value="matfin_cc2">Ciências Contábeis — 2º Semestre</option>
-            <option value="matfin_cc3">Ciências Contábeis — 3º Semestre</option>
-          </optgroup>
-          <optgroup label="Redes de Computadores">
-            <option value="redes_tads1">TADS — 1º Semestre</option>
-            <option value="redes_tads3">TADS — 3º Semestre</option>
-          </optgroup>
-          <optgroup label="Modelagem de Dados">
-            <option value="modelagem_tads1">TADS — 1º Semestre</option>
-          </optgroup>
-          <optgroup label="Lógica e Matemática Computacional">
-            <option value="logica_tads2">TADS — 2º Semestre</option>
-          </optgroup>
-        </select>
-      </div>
-      <span class="campo-erro" id="erro-turma"></span>
+        <label for="nome">Nome completo <span class="obrig">*</span></label>
+        <input type="text" id="nome" placeholder="Como consta na matrícula">
+        <span class="campo-erro" id="erro-nome"></span>
 
-      <label>Localização <span class="obrig">*</span></label>
-      <div class="geo-status obtendo" id="geo-status">
-        <div class="dot"></div>
-        <span id="geo-texto">Obtendo localização...</span>
-      </div>
-      <span class="campo-erro" id="erro-geo"></span>
+        <label>Turma / Disciplina <span class="obrig">*</span></label>
+        <div class="turma-grid" id="turma-grid"></div>
+        <span class="campo-erro" id="erro-turma"></span>
 
-      <div class="btn-grupo" style="margin-top:16px;">
-        <button type="submit" class="btn btn-primario" id="btn-continuar" disabled>Continuar →</button>
-      </div>
-    </form>
+        <label style="margin-top:4px;">Localização <span class="obrig">*</span></label>
+        <div class="geo-status obtendo" id="geo-status">
+          <div class="dot"></div>
+          <span id="geo-texto">Obtendo localização...</span>
+        </div>
+        <span class="campo-erro" id="erro-geo"></span>
+
+        <div class="btn-grupo" style="margin-top:16px;">
+          <button type="submit" class="btn btn-primario" id="btn-continuar" disabled>Continuar →</button>
+        </div>
+      </form>
+    </div>
   </div>
 
-  <!-- TELA 3: Confirmação -->
+  <!-- Confirmação -->
   <div id="tela-confirmacao">
     <div class="confirmacao-card">
       <span class="confirmacao-icone">📋</span>
       <p class="confirmacao-label">Confirme seus dados antes de registrar</p>
-      <div class="confirmacao-info">
-        <div class="ci-label">Data da aula</div>
-        <div class="ci-valor destaque" id="conf-data"></div>
-      </div>
-      <div class="confirmacao-info">
-        <div class="ci-label">Aluno</div>
-        <div class="ci-valor" id="conf-nome"></div>
-      </div>
-      <div class="confirmacao-info">
-        <div class="ci-label">RA</div>
-        <div class="ci-valor" id="conf-ra"></div>
-      </div>
-      <div class="confirmacao-info">
-        <div class="ci-label">Disciplina</div>
-        <div class="ci-valor destaque" id="conf-disciplina"></div>
-      </div>
-      <div class="confirmacao-info">
-        <div class="ci-label">Turma</div>
-        <div class="ci-valor" id="conf-turma-nome"></div>
-      </div>
+      <div class="confirmacao-info"><div class="ci-label">Data da aula</div><div class="ci-valor destaque" id="conf-data"></div></div>
+      <div class="confirmacao-info"><div class="ci-label">Aluno</div><div class="ci-valor" id="conf-nome"></div></div>
+      <div class="confirmacao-info"><div class="ci-label">RA</div><div class="ci-valor" id="conf-ra"></div></div>
+      <div class="confirmacao-info"><div class="ci-label">Disciplina</div><div class="ci-valor destaque" id="conf-disciplina"></div></div>
+      <div class="confirmacao-info"><div class="ci-label">Turma</div><div class="ci-valor" id="conf-turma-nome"></div></div>
     </div>
-
     <div class="btn-grupo">
-      <button class="btn btn-secundario" onclick="voltarForm()">← Corrigir</button>
+      <button class="btn btn-secundario" id="btn-corrigir" onclick="voltarForm()">← Corrigir</button>
       <button class="btn btn-primario" id="btn-enviar" onclick="enviar()">✓ Confirmar presença</button>
     </div>
-
     <div class="resultado" id="resultado">
       <span class="res-icone" id="res-icone"></span>
       <span id="res-texto"></span>
@@ -356,41 +318,44 @@
 
 <script>
 const API_URL = 'https://script.google.com/macros/s/AKfycbwAofMUf1dZVA4Z7bleLvvGatCKAbCOVVRknDbem4nCBm8oyQ8_VtvnxWgsT0CI4ANryQ/exec';
+const ADMINS  = ['COLE_AQUI_SEU_EMAIL@gmail.com'];
 
-const ADMINS = ['rmaia2274@gmail.com'];
-
-const TURMAS = {
-  'matfin_adm1':    { disciplina: 'Matemática Financeira',           turma: 'Administração — 1º Semestre' },
-  'matfin_adm3':    { disciplina: 'Matemática Financeira',           turma: 'Administração — 3º Semestre' },
-  'matfin_cc2':     { disciplina: 'Matemática Financeira',           turma: 'Ciências Contábeis — 2º Semestre' },
-  'matfin_cc3':     { disciplina: 'Matemática Financeira',           turma: 'Ciências Contábeis — 3º Semestre' },
-  'redes_tads1':    { disciplina: 'Redes de Computadores',           turma: 'TADS — 1º Semestre' },
-  'redes_tads3':    { disciplina: 'Redes de Computadores',           turma: 'TADS — 3º Semestre' },
-  'modelagem_tads1':{ disciplina: 'Modelagem de Dados',              turma: 'TADS — 1º Semestre' },
-  'logica_tads2':   { disciplina: 'Lógica e Matemática Computacional', turma: 'TADS — 2º Semestre' },
+// Turmas por dia (0=Dom,1=Seg,2=Ter,3=Qua,4=Qui,5=Sex,6=Sáb)
+const TURMAS_DIA = {
+  1: [{ key:'modelagem_tads1', disc:'Modelagem de Dados',              turma:'TADS — 1º Semestre' }],
+  2: [{ key:'redes_tads1',     disc:'Redes de Computadores',           turma:'TADS — 1º Semestre' },
+      { key:'redes_tads3',     disc:'Redes de Computadores',           turma:'TADS — 3º Semestre' }],
+  3: [{ key:'logica_tads2',    disc:'Lógica e Matemática Computacional', turma:'TADS — 2º Semestre' }],
+  4: [{ key:'matfin_adm1',     disc:'Matemática Financeira',           turma:'ADM — 1º Semestre' },
+      { key:'matfin_adm3',     disc:'Matemática Financeira',           turma:'ADM — 3º Semestre' },
+      { key:'matfin_cc2',      disc:'Matemática Financeira',           turma:'Ciências Contábeis — 2º Semestre' },
+      { key:'matfin_cc3',      disc:'Matemática Financeira',           turma:'Ciências Contábeis — 3º Semestre' }],
 };
+
+// Mapa key → info completa
+const TURMAS_MAP = {};
+Object.values(TURMAS_DIA).flat().forEach(t => TURMAS_MAP[t.key] = t);
 
 let coords      = null;
 let geoOk       = false;
 let dadosGoogle = null;
 let dadosEnvio  = null;
 let dataAulaAtual = '';
+let turmaSelecionada = null;
 
 // ── Google OAuth ──────────────────────────────────────────
 function onGoogleLogin(response) {
   try {
     const payload = parseJwt(response.credential);
     dadosGoogle = { email: payload.email, nome: payload.name, foto: payload.picture };
-
     document.getElementById('tela-login').style.display = 'none';
-
     if (ADMINS.map(e=>e.toLowerCase()).includes(payload.email.toLowerCase())) {
       mostrarAdmin();
     } else {
       mostrarFormulario();
     }
   } catch(e) {
-    document.getElementById('login-erro').textContent = 'Erro ao processar login. Tente novamente.';
+    document.getElementById('login-erro').textContent = 'Erro ao processar login.';
     document.getElementById('login-erro').style.display = 'block';
   }
 }
@@ -403,7 +368,8 @@ function parseJwt(token) {
 }
 
 function sair() {
-  dadosGoogle = null; coords = null; geoOk = false; dataAulaAtual = '';
+  dadosGoogle = null; coords = null; geoOk = false;
+  dataAulaAtual = ''; turmaSelecionada = null;
   ['tela-admin','tela-form','tela-confirmacao'].forEach(id => document.getElementById(id).style.display = 'none');
   document.getElementById('tela-login').style.display = 'block';
   if (document.getElementById('form')) document.getElementById('form').reset();
@@ -412,48 +378,31 @@ function sair() {
 
 // ── Admin ─────────────────────────────────────────────────
 async function mostrarAdmin() {
-  document.getElementById('foto-google-adm').src  = dadosGoogle.foto;
-  document.getElementById('nome-google-adm').textContent  = dadosGoogle.nome;
-  document.getElementById('email-google-adm').textContent = dadosGoogle.email;
+  document.getElementById('foto-adm').src  = dadosGoogle.foto;
+  document.getElementById('nome-adm').textContent  = dadosGoogle.nome;
+  document.getElementById('email-adm').textContent = dadosGoogle.email;
   document.getElementById('tela-admin').style.display = 'block';
-
-  // Define data de hoje como padrão no input
-  const hoje = new Date().toISOString().substring(0, 10);
-  document.getElementById('nova-data').value = hoje;
-
-  // Carrega data vigente
+  document.getElementById('nova-data').value = new Date().toISOString().substring(0,10);
   try {
-    const url = API_URL + '?' + new URLSearchParams({ admin: '1', acao: 'get_data', email: dadosGoogle.email }).toString();
-    const resp = await fetch(url, { method: 'GET', redirect: 'follow' });
+    const url = API_URL + '?' + new URLSearchParams({ admin:'1', acao:'get_data' }).toString();
+    const resp = await fetch(url, { method:'GET', redirect:'follow' });
     const json = await resp.json();
     const el = document.getElementById('data-atual-display');
-    if (json.ok && json.data_aula) {
-      el.textContent = formatarData(json.data_aula);
-      el.className = 'data-atual-valor';
-    } else {
-      el.textContent = 'Nenhuma data definida';
-      el.className = 'data-atual-valor vazia';
-    }
-  } catch(e) {
-    document.getElementById('data-atual-display').textContent = 'Erro ao carregar';
-  }
+    if (json.ok && json.data_aula) { el.textContent = formatarData(json.data_aula); el.className = 'data-atual-valor'; }
+    else { el.textContent = 'Nenhuma data definida'; el.className = 'data-atual-valor vazia'; }
+  } catch(e) { document.getElementById('data-atual-display').textContent = 'Erro ao carregar'; }
 }
 
 async function definirData() {
   const data = document.getElementById('nova-data').value;
-  const erroEl = document.getElementById('erro-data-adm');
-  erroEl.textContent = '';
-
-  if (!data) { erroEl.textContent = 'Selecione uma data.'; return; }
-
+  document.getElementById('erro-data-adm').textContent = '';
+  if (!data) { document.getElementById('erro-data-adm').textContent = 'Selecione uma data.'; return; }
   const res = document.getElementById('resultado-adm');
   res.style.display = 'none';
-
   try {
-    const url = API_URL + '?' + new URLSearchParams({ admin: '1', acao: 'set_data', email: dadosGoogle.email, data_aula: data }).toString();
-    const resp = await fetch(url, { method: 'GET', redirect: 'follow' });
+    const url = API_URL + '?' + new URLSearchParams({ admin:'1', acao:'set_data', email:dadosGoogle.email, data_aula:data }).toString();
+    const resp = await fetch(url, { method:'GET', redirect:'follow' });
     const json = await resp.json();
-
     res.style.display = 'block';
     if (json.ok) {
       res.className = 'resultado sucesso';
@@ -467,8 +416,7 @@ async function definirData() {
       document.getElementById('res-texto-adm').textContent = json.erro;
     }
   } catch(e) {
-    res.style.display = 'block';
-    res.className = 'resultado erro';
+    res.style.display = 'block'; res.className = 'resultado erro';
     document.getElementById('res-icone-adm').textContent = '❌';
     document.getElementById('res-texto-adm').textContent = 'Falha na conexão.';
   }
@@ -476,19 +424,21 @@ async function definirData() {
 
 function formatarData(iso) {
   if (!iso) return '';
-  const [y, m, d] = iso.split('-');
+  const [y,m,d] = iso.split('-');
   return d + '/' + m + '/' + y;
 }
 
 // ── Formulário aluno ──────────────────────────────────────
 async function mostrarFormulario() {
-  document.getElementById('foto-google').src = dadosGoogle.foto;
-  document.getElementById('nome-google-display').textContent = dadosGoogle.nome;
+  document.getElementById('foto-aluno').src  = dadosGoogle.foto;
+  document.getElementById('nome-aluno').textContent  = dadosGoogle.nome;
+  document.getElementById('email-aluno').textContent = dadosGoogle.email;
+  document.getElementById('tela-form').style.display = 'block';
 
   // Busca data vigente
   try {
-    const url = API_URL + '?' + new URLSearchParams({ admin: '1', acao: 'get_data', email: dadosGoogle.email }).toString();
-    const resp = await fetch(url, { method: 'GET', redirect: 'follow' });
+    const url = API_URL + '?' + new URLSearchParams({ admin:'1', acao:'get_data' }).toString();
+    const resp = await fetch(url, { method:'GET', redirect:'follow' });
     const json = await resp.json();
     if (json.ok && json.data_aula) {
       dataAulaAtual = json.data_aula;
@@ -498,11 +448,45 @@ async function mostrarFormulario() {
       document.getElementById('data-aula-display').style.color = 'var(--erro)';
     }
   } catch(e) {
-    document.getElementById('data-aula-display').textContent = 'Erro ao carregar data';
+    document.getElementById('data-aula-display').textContent = 'Erro ao carregar';
   }
 
-  document.getElementById('tela-form').style.display = 'block';
-  tentarGeo();
+  // Filtra turmas pelo dia da semana atual
+  const dia = new Date().getDay();
+  const turmasDia = TURMAS_DIA[dia] || [];
+
+  if (!turmasDia.length) {
+    document.getElementById('sem-aula-hoje').style.display = 'block';
+    document.getElementById('form-wrap').style.display = 'none';
+  } else {
+    renderizarTurmas(turmasDia);
+    tentarGeo();
+  }
+}
+
+function renderizarTurmas(turmas) {
+  const grid = document.getElementById('turma-grid');
+  grid.innerHTML = '';
+  turmas.forEach(t => {
+    const card = document.createElement('div');
+    card.className = 'turma-card';
+    card.dataset.key = t.key;
+    card.innerHTML = `<div class="tc-radio"></div>
+      <div class="tc-info">
+        <div class="tc-disc">${t.disc}</div>
+        <div class="tc-turma">${t.turma}</div>
+      </div>`;
+    card.addEventListener('click', () => selecionarTurma(t.key));
+    grid.appendChild(card);
+  });
+}
+
+function selecionarTurma(key) {
+  turmaSelecionada = key;
+  document.querySelectorAll('.turma-card').forEach(c => {
+    c.classList.toggle('selecionado', c.dataset.key === key);
+  });
+  document.getElementById('erro-turma').textContent = '';
 }
 
 // ── Geolocalização ────────────────────────────────────────
@@ -520,10 +504,10 @@ function tentarGeo() {
   navigator.geolocation.getCurrentPosition(
     pos => { coords = { latitude: pos.coords.latitude, longitude: pos.coords.longitude }; setGeo('ok', '📍 Localização verificada com sucesso'); },
     err => {
-      const msgs = { 1:'Permissão negada — permita a localização e recarregue.', 2:'Não foi possível obter localização.', 3:'Tempo esgotado — tente novamente.' };
-      setGeo('erro', msgs[err.code] || 'Erro ao obter localização.');
+      const msgs = {1:'Permissão negada — permita e recarregue.',2:'Não foi possível obter localização.',3:'Tempo esgotado.'};
+      setGeo('erro', msgs[err.code] || 'Erro de localização.');
     },
-    { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
+    { enableHighAccuracy:true, timeout:15000, maximumAge:0 }
   );
 }
 
@@ -537,57 +521,30 @@ function limparErros() {
 
 function validar() {
   limparErros(); let ok = true;
-
   const ra = document.getElementById('ra').value.trim();
-  if (!ra) {
-    document.getElementById('erro-ra').textContent = 'O RA é obrigatório.';
-    document.getElementById('ra').classList.add('invalido'); ok = false;
-  } else if (!/^\d+$/.test(ra.replace(/\D/g,''))) {
-    document.getElementById('erro-ra').textContent = 'RA inválido — apenas números.';
-    document.getElementById('ra').classList.add('invalido'); ok = false;
-  }
-
+  if (!ra) { document.getElementById('erro-ra').textContent = 'O RA é obrigatório.'; document.getElementById('ra').classList.add('invalido'); ok = false; }
+  else if (!/^\d+$/.test(ra.replace(/\D/g,''))) { document.getElementById('erro-ra').textContent = 'RA inválido — apenas números.'; document.getElementById('ra').classList.add('invalido'); ok = false; }
   const nome = document.getElementById('nome').value.trim();
-  if (!nome) {
-    document.getElementById('erro-nome').textContent = 'O nome completo é obrigatório.';
-    document.getElementById('nome').classList.add('invalido'); ok = false;
-  } else if (nome.split(' ').filter(Boolean).length < 2) {
-    document.getElementById('erro-nome').textContent = 'Informe nome e sobrenome.';
-    document.getElementById('nome').classList.add('invalido'); ok = false;
-  }
-
-  const turma = document.getElementById('turma').value;
-  if (!turma) {
-    document.getElementById('erro-turma').textContent = 'Selecione a turma.';
-    document.getElementById('turma').classList.add('invalido'); ok = false;
-  }
-
-  if (!geoOk || !coords) {
-    document.getElementById('erro-geo').textContent = 'Localização ainda não obtida.';
-    ok = false;
-  }
-
+  if (!nome) { document.getElementById('erro-nome').textContent = 'O nome completo é obrigatório.'; document.getElementById('nome').classList.add('invalido'); ok = false; }
+  else if (nome.split(' ').filter(Boolean).length < 2) { document.getElementById('erro-nome').textContent = 'Informe nome e sobrenome.'; document.getElementById('nome').classList.add('invalido'); ok = false; }
+  if (!turmaSelecionada) { document.getElementById('erro-turma').textContent = 'Selecione sua turma.'; ok = false; }
+  if (!geoOk || !coords) { document.getElementById('erro-geo').textContent = 'Localização ainda não obtida.'; ok = false; }
   return ok;
 }
 
-// ── Tela confirmação ──────────────────────────────────────
+// ── Confirmação ───────────────────────────────────────────
 document.getElementById('form').addEventListener('submit', function(e) {
   e.preventDefault();
   if (!validar()) return;
-
-  const ra    = document.getElementById('ra').value.trim();
-  const nome  = document.getElementById('nome').value.trim();
-  const turma = document.getElementById('turma').value;
-  const info  = TURMAS[turma];
-
-  dadosEnvio = { ra, nome, turma, latitude: coords.latitude, longitude: coords.longitude, email: dadosGoogle.email, nomeGoogle: dadosGoogle.nome };
-
-  document.getElementById('conf-data').textContent         = formatarData(dataAulaAtual);
-  document.getElementById('conf-nome').textContent         = nome;
-  document.getElementById('conf-ra').textContent           = ra;
-  document.getElementById('conf-disciplina').textContent   = info.disciplina;
-  document.getElementById('conf-turma-nome').textContent   = info.turma;
-
+  const ra   = document.getElementById('ra').value.trim();
+  const nome = document.getElementById('nome').value.trim();
+  const info = TURMAS_MAP[turmaSelecionada];
+  dadosEnvio = { ra, nome, turma: turmaSelecionada, latitude: coords.latitude, longitude: coords.longitude, email: dadosGoogle.email, nomeGoogle: dadosGoogle.nome };
+  document.getElementById('conf-data').textContent       = formatarData(dataAulaAtual);
+  document.getElementById('conf-nome').textContent       = nome;
+  document.getElementById('conf-ra').textContent         = ra;
+  document.getElementById('conf-disciplina').textContent = info.disc;
+  document.getElementById('conf-turma-nome').textContent = info.turma;
   document.getElementById('tela-form').style.display        = 'none';
   document.getElementById('tela-confirmacao').style.display = 'block';
   document.getElementById('resultado').style.display        = 'none';
@@ -604,20 +561,18 @@ async function enviar() {
   btn.disabled = true;
   btn.innerHTML = '<span class="spinner"></span>Registrando...';
   document.getElementById('resultado').style.display = 'none';
-
   try {
     const url = API_URL + '?' + new URLSearchParams(dadosEnvio).toString();
-    const resp = await fetch(url, { method: 'GET', redirect: 'follow' });
+    const resp = await fetch(url, { method:'GET', redirect:'follow' });
     const json = await resp.json();
     const res  = document.getElementById('resultado');
     res.style.display = 'block';
-
     if (json.ok) {
       res.className = 'resultado sucesso';
       document.getElementById('res-icone').textContent = '✅';
       document.getElementById('res-texto').textContent = json.mensagem;
       btn.style.display = 'none';
-      document.querySelector('#tela-confirmacao .btn-secundario').style.display = 'none';
+      document.getElementById('btn-corrigir').style.display = 'none';
     } else {
       res.className = 'resultado erro';
       document.getElementById('res-icone').textContent = '❌';
@@ -629,12 +584,12 @@ async function enviar() {
     const res = document.getElementById('resultado');
     res.style.display = 'block'; res.className = 'resultado erro';
     document.getElementById('res-icone').textContent = '❌';
-    document.getElementById('res-texto').textContent = 'Falha na conexão. Verifique o sinal e tente novamente.';
+    document.getElementById('res-texto').textContent = 'Falha na conexão. Verifique o sinal.';
     btn.disabled = false; btn.innerHTML = '✓ Confirmar presença';
   }
 }
 
-['ra','nome','turma'].forEach(id => {
+['ra','nome'].forEach(id => {
   const el = document.getElementById(id);
   if (el) el.addEventListener('input', () => {
     document.getElementById('erro-' + id).textContent = '';
