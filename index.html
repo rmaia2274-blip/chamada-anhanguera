@@ -125,7 +125,6 @@
   input.invalido, select.invalido { border-color: var(--erro); background: var(--erro-bg); }
   .campo-erro { font-size: 11px; color: var(--erro); margin-bottom: 14px; min-height: 16px; display: block; }
 
-  /* Seleção de turma como cards */
   .turma-grid { display: flex; flex-direction: column; gap: 8px; margin-bottom: 4px; }
   .turma-card {
     border: 1.5px solid var(--borda); border-radius: 10px;
@@ -186,6 +185,9 @@
   .sem-aula { text-align:center; padding:20px 0; }
   .sem-aula .sa-icone { font-size:40px; margin-bottom:12px; }
   .sem-aula p { font-size:14px; color:var(--texto-leve); line-height:1.6; }
+
+  .select-wrap { position: relative; }
+  .select-wrap::after { content: '▾'; position: absolute; right: 14px; top: 50%; transform: translateY(-50%); color: var(--texto-leve); pointer-events: none; font-size: 14px; }
 </style>
 </head>
 <body>
@@ -220,7 +222,7 @@
 
   <!-- Admin -->
   <div id="tela-admin">
-    <div class="usuario-bar" id="ubar-admin">
+    <div class="usuario-bar">
       <img id="foto-adm" src="" alt="">
       <div class="info"><div class="ng" id="nome-adm"></div><div class="eg" id="email-adm"></div></div>
       <button class="btn-sair" onclick="sair()">Sair</button>
@@ -235,7 +237,7 @@
     <input type="date" id="nova-data">
     <span class="campo-erro" id="erro-data-adm"></span>
     <div class="btn-grupo" style="margin-top:4px;">
-      <button class="btn btn-primario" onclick="definirData()">Salvar data da aula</button>
+      <button class="btn btn-primario" id="btn-salvar-data" onclick="definirData()">Salvar data da aula</button>
     </div>
     <div class="resultado" id="resultado-adm">
       <span class="res-icone" id="res-icone-adm"></span>
@@ -245,7 +247,7 @@
 
   <!-- Formulário aluno -->
   <div id="tela-form">
-    <div class="usuario-bar" id="ubar-aluno">
+    <div class="usuario-bar">
       <img id="foto-aluno" src="" alt="">
       <div class="info"><div class="ng" id="nome-aluno"></div><div class="eg" id="email-aluno"></div></div>
       <button class="btn-sair" onclick="sair()">Sair</button>
@@ -257,7 +259,7 @@
     </div>
 
     <div id="form-wrap">
-      <div class="aula-badge" id="aula-badge">📅 <span id="data-aula-display"></span></div>
+      <div class="aula-badge">📅 <span id="data-aula-display"></span></div>
       <div class="divider"></div>
       <p class="secao-titulo">Dados da Matrícula</p>
 
@@ -318,30 +320,29 @@
 
 <script>
 const API_URL = 'https://script.google.com/macros/s/AKfycbwAofMUf1dZVA4Z7bleLvvGatCKAbCOVVRknDbem4nCBm8oyQ8_VtvnxWgsT0CI4ANryQ/exec';
-const ADMINS  = ['rmaia2274@gmail.com'];
+const ADMINS  = ['COLE_AQUI_SEU_EMAIL@gmail.com'];
 
-// Turmas por dia (0=Dom,1=Seg,2=Ter,3=Qua,4=Qui,5=Sex,6=Sáb)
 const TURMAS_DIA = {
-  1: [{ key:'modelagem_tads1', disc:'Modelagem de Dados',              turma:'TADS — 1º Semestre' }],
-  2: [{ key:'redes_tads1',     disc:'Redes de Computadores',           turma:'TADS — 1º Semestre' },
-      { key:'redes_tads3',     disc:'Redes de Computadores',           turma:'TADS — 3º Semestre' }],
+  1: [{ key:'modelagem_tads1', disc:'Modelagem de Dados',                turma:'TADS — 1º Semestre' }],
+  2: [{ key:'redes_tads1',     disc:'Redes de Computadores',             turma:'TADS — 1º Semestre' },
+      { key:'redes_tads3',     disc:'Redes de Computadores',             turma:'TADS — 3º Semestre' }],
   3: [{ key:'logica_tads2',    disc:'Lógica e Matemática Computacional', turma:'TADS — 2º Semestre' }],
-  4: [{ key:'matfin_adm1',     disc:'Matemática Financeira',           turma:'ADM — 1º Semestre' },
-      { key:'matfin_adm3',     disc:'Matemática Financeira',           turma:'ADM — 3º Semestre' },
-      { key:'matfin_cc2',      disc:'Matemática Financeira',           turma:'Ciências Contábeis — 2º Semestre' },
-      { key:'matfin_cc3',      disc:'Matemática Financeira',           turma:'Ciências Contábeis — 3º Semestre' }],
+  4: [{ key:'matfin_adm1',     disc:'Matemática Financeira',             turma:'ADM — 1º Semestre' },
+      { key:'matfin_adm3',     disc:'Matemática Financeira',             turma:'ADM — 3º Semestre' },
+      { key:'matfin_cc2',      disc:'Matemática Financeira',             turma:'Ciências Contábeis — 2º Semestre' },
+      { key:'matfin_cc3',      disc:'Matemática Financeira',             turma:'Ciências Contábeis — 3º Semestre' }],
 };
 
-// Mapa key → info completa
 const TURMAS_MAP = {};
 Object.values(TURMAS_DIA).flat().forEach(t => TURMAS_MAP[t.key] = t);
 
-let coords      = null;
-let geoOk       = false;
-let dadosGoogle = null;
-let dadosEnvio  = null;
-let dataAulaAtual = '';
+let coords           = null;
+let geoOk            = false;
+let dadosGoogle      = null;
+let dadosEnvio       = null;
+let dataAulaAtual    = '';
 let turmaSelecionada = null;
+let enviando         = false; // flag anti-duplo-clique
 
 // ── Google OAuth ──────────────────────────────────────────
 function onGoogleLogin(response) {
@@ -369,7 +370,7 @@ function parseJwt(token) {
 
 function sair() {
   dadosGoogle = null; coords = null; geoOk = false;
-  dataAulaAtual = ''; turmaSelecionada = null;
+  dataAulaAtual = ''; turmaSelecionada = null; enviando = false;
   ['tela-admin','tela-form','tela-confirmacao'].forEach(id => document.getElementById(id).style.display = 'none');
   document.getElementById('tela-login').style.display = 'block';
   if (document.getElementById('form')) document.getElementById('form').reset();
@@ -388,15 +389,21 @@ async function mostrarAdmin() {
     const resp = await fetch(url, { method:'GET', redirect:'follow' });
     const json = await resp.json();
     const el = document.getElementById('data-atual-display');
-    if (json.ok && json.data_aula) { el.textContent = formatarData(json.data_aula); el.className = 'data-atual-valor'; }
+    if (json.ok && json.data_aula) { el.textContent = json.data_aula; el.className = 'data-atual-valor'; }
     else { el.textContent = 'Nenhuma data definida'; el.className = 'data-atual-valor vazia'; }
   } catch(e) { document.getElementById('data-atual-display').textContent = 'Erro ao carregar'; }
 }
 
 async function definirData() {
+  const btn = document.getElementById('btn-salvar-data');
   const data = document.getElementById('nova-data').value;
   document.getElementById('erro-data-adm').textContent = '';
   if (!data) { document.getElementById('erro-data-adm').textContent = 'Selecione uma data.'; return; }
+
+  // Desabilita imediatamente para evitar duplo clique
+  btn.disabled = true;
+  btn.textContent = 'Salvando...';
+
   const res = document.getElementById('resultado-adm');
   res.style.display = 'none';
   try {
@@ -407,8 +414,8 @@ async function definirData() {
     if (json.ok) {
       res.className = 'resultado sucesso';
       document.getElementById('res-icone-adm').textContent = '✅';
-      document.getElementById('res-texto-adm').textContent = 'Data definida: ' + formatarData(data);
-      document.getElementById('data-atual-display').textContent = formatarData(data);
+      document.getElementById('res-texto-adm').textContent = json.mensagem;
+      document.getElementById('data-atual-display').textContent = json.mensagem.replace('Data definida: ','');
       document.getElementById('data-atual-display').className = 'data-atual-valor';
     } else {
       res.className = 'resultado erro';
@@ -419,13 +426,10 @@ async function definirData() {
     res.style.display = 'block'; res.className = 'resultado erro';
     document.getElementById('res-icone-adm').textContent = '❌';
     document.getElementById('res-texto-adm').textContent = 'Falha na conexão.';
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Salvar data da aula';
   }
-}
-
-function formatarData(iso) {
-  if (!iso) return '';
-  const [y,m,d] = iso.split('-');
-  return d + '/' + m + '/' + y;
 }
 
 // ── Formulário aluno ──────────────────────────────────────
@@ -435,14 +439,13 @@ async function mostrarFormulario() {
   document.getElementById('email-aluno').textContent = dadosGoogle.email;
   document.getElementById('tela-form').style.display = 'block';
 
-  // Busca data vigente
   try {
     const url = API_URL + '?' + new URLSearchParams({ admin:'1', acao:'get_data' }).toString();
     const resp = await fetch(url, { method:'GET', redirect:'follow' });
     const json = await resp.json();
     if (json.ok && json.data_aula) {
       dataAulaAtual = json.data_aula;
-      document.getElementById('data-aula-display').textContent = formatarData(json.data_aula);
+      document.getElementById('data-aula-display').textContent = json.data_aula;
     } else {
       document.getElementById('data-aula-display').textContent = 'Chamada não aberta';
       document.getElementById('data-aula-display').style.color = 'var(--erro)';
@@ -451,10 +454,8 @@ async function mostrarFormulario() {
     document.getElementById('data-aula-display').textContent = 'Erro ao carregar';
   }
 
-  // Filtra turmas pelo dia da semana atual
   const dia = new Date().getDay();
   const turmasDia = TURMAS_DIA[dia] || [];
-
   if (!turmasDia.length) {
     document.getElementById('sem-aula-hoje').style.display = 'block';
     document.getElementById('form-wrap').style.display = 'none';
@@ -483,9 +484,7 @@ function renderizarTurmas(turmas) {
 
 function selecionarTurma(key) {
   turmaSelecionada = key;
-  document.querySelectorAll('.turma-card').forEach(c => {
-    c.classList.toggle('selecionado', c.dataset.key === key);
-  });
+  document.querySelectorAll('.turma-card').forEach(c => c.classList.toggle('selecionado', c.dataset.key === key));
   document.getElementById('erro-turma').textContent = '';
 }
 
@@ -502,7 +501,7 @@ function tentarGeo() {
   if (!navigator.geolocation) { setGeo('erro', 'Geolocalização não suportada.'); return; }
   setGeo('obtendo', 'Obtendo localização...');
   navigator.geolocation.getCurrentPosition(
-    pos => { coords = { latitude: pos.coords.latitude, longitude: pos.coords.longitude }; setGeo('ok', '📍 Localização verificada com sucesso'); },
+    pos => { coords = { latitude: pos.coords.latitude, longitude: pos.coords.longitude }; setGeo('ok', '📍 Localização verificada'); },
     err => {
       const msgs = {1:'Permissão negada — permita e recarregue.',2:'Não foi possível obter localização.',3:'Tempo esgotado.'};
       setGeo('erro', msgs[err.code] || 'Erro de localização.');
@@ -540,7 +539,7 @@ document.getElementById('form').addEventListener('submit', function(e) {
   const nome = document.getElementById('nome').value.trim();
   const info = TURMAS_MAP[turmaSelecionada];
   dadosEnvio = { ra, nome, turma: turmaSelecionada, latitude: coords.latitude, longitude: coords.longitude, email: dadosGoogle.email, nomeGoogle: dadosGoogle.nome };
-  document.getElementById('conf-data').textContent       = formatarData(dataAulaAtual);
+  document.getElementById('conf-data').textContent       = dataAulaAtual;
   document.getElementById('conf-nome').textContent       = nome;
   document.getElementById('conf-ra').textContent         = ra;
   document.getElementById('conf-disciplina').textContent = info.disc;
@@ -548,37 +547,51 @@ document.getElementById('form').addEventListener('submit', function(e) {
   document.getElementById('tela-form').style.display        = 'none';
   document.getElementById('tela-confirmacao').style.display = 'block';
   document.getElementById('resultado').style.display        = 'none';
+  enviando = false; // reset ao entrar na tela de confirmação
 });
 
 function voltarForm() {
   document.getElementById('tela-confirmacao').style.display = 'none';
   document.getElementById('tela-form').style.display        = 'block';
+  enviando = false;
 }
 
-// ── Envio ─────────────────────────────────────────────────
+// ── Envio — protegido contra duplo clique ─────────────────
 async function enviar() {
+  // Proteção imediata contra duplo clique
+  if (enviando) return;
+  enviando = true;
+
   const btn = document.getElementById('btn-enviar');
   btn.disabled = true;
   btn.innerHTML = '<span class="spinner"></span>Registrando...';
   document.getElementById('resultado').style.display = 'none';
+
   try {
     const url = API_URL + '?' + new URLSearchParams(dadosEnvio).toString();
     const resp = await fetch(url, { method:'GET', redirect:'follow' });
     const json = await resp.json();
     const res  = document.getElementById('resultado');
     res.style.display = 'block';
+
     if (json.ok) {
       res.className = 'resultado sucesso';
       document.getElementById('res-icone').textContent = '✅';
       document.getElementById('res-texto').textContent = json.mensagem;
       btn.style.display = 'none';
       document.getElementById('btn-corrigir').style.display = 'none';
+      // enviando permanece true — impede qualquer nova tentativa
     } else {
       res.className = 'resultado erro';
       document.getElementById('res-icone').textContent = '❌';
       document.getElementById('res-texto').textContent = json.erro;
-      btn.disabled = false;
-      btn.innerHTML = '✓ Confirmar presença';
+      // Só reabilita se não for bloqueio definitivo
+      const bloqueioDefinitivo = json.erro.includes('Limite') || json.erro.includes('já registrada');
+      if (!bloqueioDefinitivo) {
+        btn.disabled = false;
+        btn.innerHTML = '✓ Confirmar presença';
+        enviando = false;
+      }
     }
   } catch(err) {
     const res = document.getElementById('resultado');
@@ -586,6 +599,7 @@ async function enviar() {
     document.getElementById('res-icone').textContent = '❌';
     document.getElementById('res-texto').textContent = 'Falha na conexão. Verifique o sinal.';
     btn.disabled = false; btn.innerHTML = '✓ Confirmar presença';
+    enviando = false;
   }
 }
 
